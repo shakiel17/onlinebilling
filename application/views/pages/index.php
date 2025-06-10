@@ -83,6 +83,11 @@
         <div class="alert alert-success"><?=$this->session->remarks;?></div>
         <?php
     }
+    if($this->session->error){
+        ?>
+        <div class="alert alert-danger"><?=$this->session->error;?></div>
+        <?php
+    }
     ?>
     <!-- /.card-body -->
   </div>

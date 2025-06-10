@@ -36,10 +36,42 @@
             }                
            
         }
+        public function authenticate(){
+            $username=$this->input->post('username');
+            $password=$this->input->post('password');
+            $data=$this->Billing_model->authenticate($username,$password);
+            if($data){
+                $userdata=array(
+                    'id' => $data['school_id'],
+                    'username' => $data['username'],
+                    'user_login' => true
+                );
+                $this->session->set_userdata($userdata);
+                redirect(base_url('main'));
+            }else{
+                redirect(base_url());
+            }
+        }
+        public function main(){
+            $page = "main";
+            if(!file_exists(APPPATH.'views/pages/'.$page.".php")){
+                show_404();
+            }
+            if($this->session->user_login){
+                
+            }else{
+                redirect(base_url('main'));
+            }
+            $this->load->view('templates/header');
+            $this->load->view('templates/navbar');
+            $this->load->view('pages/'.$page);
+            $this->load->view('templates/modal');
+            $this->load->view('templates/footer');            
+        }
         //===================End of School Module================================================
         
 //======================================================================================================================================
-        //===================Start of School Module================================================
+        //===================Start of Admin Module================================================
         public function admin(){
             $page = "index";
             if(!file_exists(APPPATH.'views/pages/admin/'.$page.".php")){
@@ -227,6 +259,6 @@ Thank you and God bless.";
             // }
             redirect(base_url('pending_request'));
         }
-        //===================End of School Module================================================
+        //===================End of Admin Module================================================
     }
 ?>

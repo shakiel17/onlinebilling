@@ -73,6 +73,22 @@
                 return false;
             }
         }
+
+        public function authenticate($user,$pass){
+            $result=$this->db->query("SELECT * FROM school WHERE username='$user' AND `password`='$pass'");
+            if($result->num_rows() > 0){
+                $row=$result->row_array();
+                if($row['status']=="approved"){
+                    return $result->row_array();
+                }else{
+                    $this->session->set_flashdata('error','Account is not yet approved!');
+                    return false;
+                }
+            }else{
+                $this->session->set_flashdata('error','Invalid username and password!');
+                return false;
+            }
+        }
         //=============================End of School Model===============================================
 
 //===================================================================================================================================
