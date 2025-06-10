@@ -50,6 +50,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 //========================Admin Route==============================
+$route['manage_request/(:any)/(:any)'] = 'pages/manage_request/$1/$2';
+$route['registered_student'] = 'pages/registered_student';
+$route['registered_user'] = 'pages/registered_user';
+$route['approved_request'] = 'pages/approved_request';
+$route['pending_request'] = 'pages/pending_request';
 $route['admin_logout'] = 'pages/admin_logout';
 $route['adminmain'] = 'pages/adminmain';
 $route['admin_authenticate'] = 'pages/admin_authenticate';
@@ -58,6 +63,7 @@ $route['admin'] = 'pages/admin';
 $route['main'] = 'pages/main';
 $route['logout'] = 'pages/logout';
 $route['registration'] = 'pages/registration';
+$route['school_register'] = 'pages/school_register';
 $route['authenticate'] = 'pages/authenticate';
 $route['default_controller'] = 'pages/index';
 $route['404_override'] = '';
