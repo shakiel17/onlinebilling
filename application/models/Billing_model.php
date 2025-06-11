@@ -89,6 +89,10 @@
                 return false;
             }
         }
+        public function getSchoolDetails($id){
+            $result=$this->db->query("SELECT * FROM school WHERE school_id='$id'");
+            return $result->row_array();
+        }
         //=============================End of School Model===============================================
 
 //===================================================================================================================================

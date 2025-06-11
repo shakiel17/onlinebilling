@@ -62,11 +62,20 @@
             }else{
                 redirect(base_url('main'));
             }
+            $details=$this->Billing_model->getSchoolDetails($this->session->id);
+            $data['title'] = $details['school_name'];
             $this->load->view('templates/header');
             $this->load->view('templates/navbar');
-            $this->load->view('pages/'.$page);
+            $this->load->view('pages/'.$page,$data);
             $this->load->view('templates/modal');
             $this->load->view('templates/footer');            
+        }
+        public function logout(){
+            $userdata=array(
+                'id','username','user_login'
+            );
+            $this->session->unset_userdata($userdata);
+            redirect(base_url());
         }
         //===================End of School Module================================================
         

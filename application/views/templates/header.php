@@ -32,4 +32,3 @@
   <link rel="stylesheet" href="<?=base_url('design/assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css');?>">
   <link rel="stylesheet" href="<?=base_url('design/assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css');?>">
 </head>
-<body class="hold-transition sidebar-mini layout-fixed layout-footer-fixed">
