@@ -60,6 +60,14 @@ $route['adminmain'] = 'pages/adminmain';
 $route['admin_authenticate'] = 'pages/admin_authenticate';
 $route['admin'] = 'pages/admin';
 //=========================School Route============================
+$route['save_grade'] = 'pages/save_grade';
+$route['save_course'] = 'pages/save_course';
+$route['course_grade_info'] = 'pages/course_grade_info';
+$route['save_staff_account'] = 'pages/save_staff_account';
+$route['save_staff'] = 'pages/save_staff';
+$route['upload_logo'] = 'pages/upload_logo';
+$route['school_info_save'] = 'pages/school_info_save';
+$route['school_info'] = 'pages/school_info';
 $route['main'] = 'pages/main';
 $route['logout'] = 'pages/logout';
 $route['registration'] = 'pages/registration';

@@ -79,19 +79,176 @@
             if($result->num_rows() > 0){
                 $row=$result->row_array();
                 if($row['status']=="approved"){
-                    return $result->row_array();
+                    $userdata=array(
+                    'id' => $row['school_id'],  
+                    'staff_id' => '',
+                    'username' => $row['username'],
+                    'fullname' => '',
+                    'user_login' => true
+                    );
+                    $this->session->set_userdata($userdata);
+                    return true;
                 }else{
                     $this->session->set_flashdata('error','Account is not yet approved!');
                     return false;
                 }
             }else{
-                $this->session->set_flashdata('error','Invalid username and password!');
-                return false;
+                $result=$this->db->query("SELECT * FROM school_staff WHERE username='$user' AND `password`='$pass'");
+                if($result->num_rows()>0){
+                    $row=$result->row_array();
+                    $userdata=array(
+                    'id' => $row['school_id'],  
+                    'staff_id' => $row['staff_id'],
+                    'username' => $row['username'],
+                    'fullname' => $row['staff_name'],
+                    'user_login' => true
+                    );
+                    $this->session->set_userdata($userdata);
+                    return true;
+                }else{
+                    $this->session->set_flashdata('error','Invalid username and password!');
+                    return false;
+                }                
             }
         }
         public function getSchoolDetails($id){
             $result=$this->db->query("SELECT * FROM school WHERE school_id='$id'");
             return $result->row_array();
+        }
+        public function upload_logo(){
+            $id=$this->session->id;            
+            $fileName=basename($_FILES["file"]["name"]);
+            $fileType=pathinfo($fileName, PATHINFO_EXTENSION);
+            $allowTypes = array('jpg','png','jpeg','gif');
+            //if(in_array($fileType,$allowTypes)){
+                $image = $_FILES["file"]["tmp_name"];
+                $imgContent=addslashes(file_get_contents($image));
+                $result=$this->db->query("UPDATE school SET school_logo='$imgContent' WHERE school_id='$id'");            
+           // }else{
+            //    return false;
+           // }           
+            if($result){
+                return true;
+            }else{
+                return false;
+            }
+        }
+        public function school_info_save(){
+            $id=$this->session->id; 
+            $name=$this->input->post('sname');
+            $address=$this->input->post('address');
+            $contactno=$this->input->post('contactno');
+            $email=$this->input->post('email');
+            $username=$this->input->post('username');
+            $password=$this->input->post('password');
+            $check=$this->db->query("SELECT * FROM school WHERE username='$username' AND school_id <> '$id'");
+            if($check->num_rows() > 0){
+                return false;
+            }else{
+                $result=$this->db->query("UPDATE school SET school_name='$name',school_address='$address',school_contact='$contactno',school_email='$email',username='$username',`password`='$password' WHERE school_id='$id'");
+                if($result){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+        }
+        public function save_staff(){            
+            $id=$this->session->id;
+            $query=$this->db->query("SELECT * FROM school WHERE school_id='$id'");
+            $row=$query->row_array();
+            $school_name=$row['school_name'];
+            $staff_id=$this->input->post('staff_id');
+            $staff_name=$this->input->post('staff_name');
+            $status=$this->input->post('status');
+             $date=date('Y-m-d');
+            $time=date('H:i:s');
+            if($staff_id==""){
+                $expr = '/(?<=\s|^)\w/iu';
+                preg_match_all($expr, $school_name, $matches);
+                $sname = implode('', $matches[0]);
+                $staff_id = strtoupper($sname)."S".date('YmdHis');
+                $result=$this->db->query("INSERT INTO school_staff(school_id,staff_id,staff_name,`status`,datearray,timearray) VALUES('$id','$staff_id','$staff_name','$status','$date','$time')");
+            }else{
+                $result=$this->db->query("UPDATE  school_staff SET staff_name='$staff_name',`status`='$status' WHERE staff_id='$staff_id'");
+            }
+            if($result){
+                return true;
+            }else{
+                return false;
+            }
+        }
+        public function getAllStaff(){
+            if($this->session->admin_login){                
+                $result=$this->db->query("SELECT * FROM school_staff");
+            }else if($this->session->user_login){
+                $id=$this->session->id;
+                $result=$this->db->query("SELECT * FROM school_staff WHERE school_id='$id'");
+            }            
+            return $result->result_array();
+        }
+        public function save_staff_account(){
+            $staff_id=$this->input->post('staff_id');
+            $username=$this->input->post('username');
+            $password=$this->input->post('password');   
+            $check=$this->db->query("SELECT * FROM school WHERE username='$username'")     ;
+            if($check->num_rows()>0){
+                return false;
+            }else{
+                $check=$this->db->query("SELECT * FROM school_staff WHERE username='$username' AND staff_id <> '$staff_id'");
+                if($check->num_rows()>0){
+                    return false;
+                }else{
+                    $result=$this->db->query("UPDATE  school_staff SET username='$username',`password`='$password' WHERE staff_id='$staff_id'");            
+                    if($result){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }
+            }                        
+        }
+        public function getAllCourse(){
+            $id=$this->session->id;
+            $result=$this->db->query("SELECT * FROM course WHERE school_id='$id'");
+            return $result->result_array();
+        }
+        public function getAllGrade(){
+            $id=$this->session->id;
+            $result=$this->db->query("SELECT * FROM grade WHERE school_id='$id'");
+            return $result->result_array();
+        }
+        public function save_course(){
+            $school_id=$this->session->id;
+            $course_id=$this->input->post('course_id');
+            $description=$this->input->post('description');
+            $amount=$this->input->post('unitcost');
+            if($course_id==""){
+                $result=$this->db->query("INSERT INTO course(school_id,`description`,amount) VALUES('$school_id','$description','$amount')");
+            }else{
+                $result=$this->db->query("UPDATE course SET `description`='$description',amount='$amount' WHERE id='$course_id'");
+            }
+            if($result){
+                return true;
+            }else{
+                return false;
+            }
+        }
+        public function save_grade(){
+            $school_id=$this->session->id;
+            $grade_id=$this->input->post('grade_id');
+            $description=$this->input->post('description');
+            $amount=$this->input->post('unitcost');
+            if($grade_id==""){
+                $result=$this->db->query("INSERT INTO grade(school_id,`description`,amount) VALUES('$school_id','$description','$amount')");
+            }else{
+                $result=$this->db->query("UPDATE grade SET `description`='$description',amount='$amount' WHERE id='$grade_id'");
+            }
+            if($result){
+                return true;
+            }else{
+                return false;
+            }
         }
         //=============================End of School Model===============================================
 

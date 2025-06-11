@@ -76,6 +76,60 @@
       "autoWidth": false,
       "responsive": true,
     });
+    $('#example3').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  });
+
+  $('.addStaff').click(function(){
+    document.getElementById('staff_id').value='';
+    document.getElementById('staff_name').value='';
+    document.getElementById('staff_status').value='';
+  });
+  $('.editStaff').click(function(){
+    var data=$(this).data('id');
+    var id=data.split('_');
+    document.getElementById('staff_id').value=id[0];
+    document.getElementById('staff_name').value=id[1];
+    document.getElementById('staff_status').value=id[2];
+  });
+  $('.manageAccount').click(function(){
+    var data=$(this).data('id');
+    var id=data.split('_');
+    document.getElementById('staff_account_id').value=id[0];
+    document.getElementById('staff_username').value=id[1];
+    document.getElementById('staff_password').value=id[2];
+  });
+   $('.addCourse').click(function(){
+    document.getElementById('course_id').value='';
+    document.getElementById('course_name').value='';
+    document.getElementById('course_amount').value='';
+  });
+  $('.editCourse').click(function(){
+    var data=$(this).data('id');
+    var id=data.split('_');
+    document.getElementById('course_id').value=id[0];
+    document.getElementById('course_name').value=id[1];
+    document.getElementById('course_amount').value=id[2];
+  });
+
+  $('.addGrade').click(function(){
+    document.getElementById('grade_id').value='';
+    document.getElementById('grade_name').value='';
+    document.getElementById('grade_amount').value='';
+  });
+  $('.editGrade').click(function(){
+    var data=$(this).data('id');
+    var id=data.split('_');
+    document.getElementById('grade_id').value=id[0];
+    document.getElementById('grade_name').value=id[1];
+    document.getElementById('grade_amount').value=id[2];
   });
 </script>
 </body>

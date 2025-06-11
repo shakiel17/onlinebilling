@@ -40,18 +40,12 @@
             $username=$this->input->post('username');
             $password=$this->input->post('password');
             $data=$this->Billing_model->authenticate($username,$password);
-            if($data){
-                $userdata=array(
-                    'id' => $data['school_id'],
-                    'username' => $data['username'],
-                    'user_login' => true
-                );
-                $this->session->set_userdata($userdata);
+            if($data){                
                 redirect(base_url('main'));
             }else{
                 redirect(base_url());
             }
-        }
+        }        
         public function main(){
             $page = "main";
             if(!file_exists(APPPATH.'views/pages/'.$page.".php")){
@@ -64,6 +58,9 @@
             }
             $details=$this->Billing_model->getSchoolDetails($this->session->id);
             $data['title'] = $details['school_name'];
+            $data['address'] = $details['school_address'];
+            $data['email'] = $details['school_email'];
+            $data['contactno'] = $details['school_contact'];
             $this->load->view('templates/header');
             $this->load->view('templates/navbar');
             $this->load->view('pages/'.$page,$data);
@@ -72,10 +69,100 @@
         }
         public function logout(){
             $userdata=array(
-                'id','username','user_login'
+                'id','staff_id','username','fullname','user_login'
             );
             $this->session->unset_userdata($userdata);
             redirect(base_url());
+        }
+        public function school_info(){
+            $page = "school_info";
+            if(!file_exists(APPPATH.'views/pages/'.$page.".php")){
+                show_404();
+            }
+            if($this->session->user_login){
+                
+            }else{
+                redirect(base_url('main'));
+            }
+            $data['details']=$this->Billing_model->getSchoolDetails($this->session->id);            
+            $this->load->view('templates/header');
+            $this->load->view('templates/navbar');
+            $this->load->view('pages/'.$page,$data);
+            $this->load->view('templates/modal');
+            $this->load->view('templates/footer');            
+        }
+        public function upload_logo(){
+            $upload=$this->Billing_model->upload_logo();
+            if($upload){
+                $this->session->set_flashdata('success','School Logo successfully saved!');
+            }else{
+                $this->session->set_flashdata('failed','Unable to save School Logo!');
+            }
+            redirect(base_url('school_info'));
+        }
+        public function school_info_save(){
+            $upload=$this->Billing_model->school_info_save();
+            if($upload){
+                $this->session->set_flashdata('success','School Info successfully saved!');
+            }else{
+                $this->session->set_flashdata('failed','Unable to save School Info!');
+            }
+            redirect(base_url('school_info'));
+        }
+        public function save_staff(){
+            $upload=$this->Billing_model->save_staff();
+            if($upload){
+                $this->session->set_flashdata('success','Staff details successfully saved!');
+            }else{
+                $this->session->set_flashdata('failed','Unable to save staff details!');
+            }
+            redirect(base_url('main'));
+        }
+        public function save_staff_account(){
+            $upload=$this->Billing_model->save_staff_account();
+            if($upload){
+                $this->session->set_flashdata('success','Staff account details successfully saved!');
+            }else{
+                $this->session->set_flashdata('failed','Unable to save staff account details!');
+            }
+            redirect(base_url('main'));
+        }
+        public function course_grade_info(){
+            $page = "course_grade_info";
+            if(!file_exists(APPPATH.'views/pages/'.$page.".php")){
+                show_404();
+            }
+            if($this->session->user_login){
+                
+            }else{
+                redirect(base_url('main'));
+            }
+            $data['details']=$this->Billing_model->getSchoolDetails($this->session->id);
+            $data['courses'] = $this->Billing_model->getAllCourse();            
+            $data['grades'] = $this->Billing_model->getAllGrade();
+            $this->load->view('templates/header');
+            $this->load->view('templates/navbar');
+            $this->load->view('pages/'.$page,$data);
+            $this->load->view('templates/modal');
+            $this->load->view('templates/footer');            
+        }
+        public function save_course(){
+            $upload=$this->Billing_model->save_course();
+            if($upload){
+                $this->session->set_flashdata('success','Course details successfully saved!');
+            }else{
+                $this->session->set_flashdata('failed','Unable to save course details!');
+            }
+            redirect(base_url('course_grade_info'));
+        }
+        public function save_grade(){
+            $upload=$this->Billing_model->save_grade();
+            if($upload){
+                $this->session->set_flashdata('success','Grade details successfully saved!');
+            }else{
+                $this->session->set_flashdata('failed','Unable to save grade details!');
+            }
+            redirect(base_url('course_grade_info'));
         }
         //===================End of School Module================================================
         
