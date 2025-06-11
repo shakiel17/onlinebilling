@@ -59,7 +59,7 @@
               </div>
             </div>
 
-            <div class="card card-primary card-outline">
+            <div class="card card-outline">
               <div class="card-header">
                 <h5 class="card-title m-0"><i class="fas fa-money-bill-alt"></i> Billing Manager</h5>
               </div>
@@ -85,7 +85,7 @@
               </div>
             </div>
 
-            <div class="card card-primary card-outline">
+            <div class="card  card-outline">
               <div class="card-header">
                 <h5 class="card-title m-0"><i class="fas fa-mail-bulk"></i> Email Notification Manager</h5>
               </div>
