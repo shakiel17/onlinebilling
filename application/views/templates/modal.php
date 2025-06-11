@@ -182,3 +182,137 @@
         </div>
         <!-- /.modal-dialog -->
       </div>
+
+      <div class="modal fade" id="ManageStudentCollege">
+        <div class="modal-dialog modal-md">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Student Manager (College)</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form action="<?=base_url('save_student');?>" method="POST">     
+                <input type="hidden" name="id" id="student_college_id">
+                <input type="hidden" name="type" value="college">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Student ID</label>
+                    <input type="text" class="form-control" name="student_id" id="st_col_id" placeholder="Student ID" required>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Last Name</label>
+                    <input type="text" class="form-control" name="lastname" id="st_col_lastname" placeholder="Last Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">First Name</label>
+                    <input type="text" class="form-control" name="firstname" id="st_col_firstname" placeholder="First Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Middle Name</label>
+                    <input type="text" class="form-control" name="middlename" id="st_col_middlename" placeholder="Middle Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Address</label>
+                    <textarea name="address" class="form-control" rows="3" id="st_col_address"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Gender</label>
+                    <select name="gender" class="form-control" id="st_col_gender" required>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Date of Birth</label>
+                    <input type="date" class="form-control" name="birthdate" id="st_col_birthdate" placeholder="Birthdate" required>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Course</label>
+                    <select name="course" class="form-control" id="st_col_course">
+                        <?php
+                        $course=$this->Billing_model->getAllCourse();
+                        foreach($course as $row){
+                            echo "<option value='$row[id]'>$row[description]</option>";
+                        }
+                        ?>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+            </form>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+
+      <div class="modal fade" id="ManageStudentHigh">
+        <div class="modal-dialog modal-md">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Student Manager (High School)</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form action="<?=base_url('save_student');?>" method="POST">     
+                <input type="hidden" name="id" id="student_high_id">
+                <input type="hidden" name="type" value="highschool">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Student ID</label>
+                    <input type="text" class="form-control" name="student_id" id="st_high_id" placeholder="Student ID" required>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Last Name</label>
+                    <input type="text" class="form-control" name="lastname" id="st_high_lastname" placeholder="Last Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">First Name</label>
+                    <input type="text" class="form-control" name="firstname" id="st_high_firstname" placeholder="First Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Middle Name</label>
+                    <input type="text" class="form-control" name="middlename" id="st_high_middlename" placeholder="Middle Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Address</label>
+                    <textarea name="address" class="form-control" rows="3" id="st_high_address"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Gender</label>
+                    <select name="gender" class="form-control" id="st_high_gender" required>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Date of Birth</label>
+                    <input type="date" class="form-control" name="birthdate" id="st_high_birthdate" placeholder="Birthdate" required>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Course</label>
+                    <select name="course" class="form-control" id="st_high_course">
+                        <?php
+                        $course=$this->Billing_model->getAllGrade();
+                        foreach($course as $row){
+                            echo "<option value='$row[id]'>$row[description]</option>";
+                        }
+                        ?>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+            </form>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>

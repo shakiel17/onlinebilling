@@ -250,6 +250,50 @@
                 return false;
             }
         }
+        public function getAllStudentByType($type){
+            $id=$this->session->id;
+            if($type=="college"){
+                $result=$this->db->query("SELECT s.*,c.description FROM student s LEFT JOIN course c ON c.id=s.student_course WHERE s.school_id='$id' AND s.student_type='$type' ORDER BY s.student_lastname ASC");
+            }else{
+                $result=$this->db->query("SELECT s.*,c.description FROM student s LEFT JOIN grade c ON c.id=s.student_course WHERE s.school_id='$id' AND s.student_type='$type' ORDER BY s.student_lastname ASC");
+            }
+            return $result->result_array();
+        }
+        public function save_student(){
+            $school_id=$this->session->id;
+            $id=$this->input->post('id');
+            $student_id=$this->input->post('student_id');
+            $lastname=$this->input->post('lastname');
+            $firstname=$this->input->post('firstname');
+            $middlename=$this->input->post('middlename');
+            $address=$this->input->post('address');
+            $gender=$this->input->post('gender');
+            $birthdate=$this->input->post('birthdate');
+            $type=$this->input->post('type');
+            $course=$this->input->post('course');
+            $date=date('Y-m-d');
+            $time=date('H:i:s');
+            $check=$this->db->query("SELECT * FROM student WHERE student_id='$student_id' AND id <> '$id'");
+            if($check->num_rows()>0){
+                return false;
+            }else{
+                if($id == ""){
+                    $result=$this->db->query("INSERT INTO student(student_id,school_id,student_lastname,student_firstname,student_middlename,student_address,student_gender,student_birthdate,student_type,student_course,datearray,timearray) VALUES('$student_id','$school_id','$lastname','$firstname','$middlename','$address','$gender','$birthdate','$type','$course','$date','$time')");
+                }else{
+                    $result=$this->db->query("UPDATE student SET student_id='$student_id',school_id='$school_id',student_lastname='$lastname',student_firstname='$firstname',student_middlename='$middlename',student_address='$address',student_gender='$gender',student_birthdate='$birthdate',student_course='$course' WHERE id='$id'");
+                }
+                if($result){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+            
+        }
+        public function fetch_student_details($id){
+            $result=$this->db->query("SELECT * FROM student WHERE id='$id'");
+            return $result->result_array();
+        }
         //=============================End of School Model===============================================
 
 //===================================================================================================================================

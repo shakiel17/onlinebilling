@@ -55,7 +55,7 @@
                 </div>
               </div>
               <div class="card-body table-responsive">
-                    <table class="table" id="example2">
+                    <table class="table table-bordered" id="example2">
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -82,6 +82,14 @@
                             }
                             ?>
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>#</th>
+                                <th>Course</th>
+                                <th>Price per Unit</th>
+                                <th>Action</th>
+                            </tr>
+                        </tfoot>
                     </table>
               </div>
             </div>           
@@ -102,7 +110,7 @@
                 </div>
               </div>
               <div class="card-body table-responsive">
-                    <table class="table" id="example3">
+                    <table class="table table-bordered" id="example3">
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -129,6 +137,14 @@
                             }
                             ?>
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>#</th>
+                                <th>Grade Level</th>
+                                <th>Price per Year</th>
+                                <th>Action</th>
+                            </tr>                            
+                        </tfoot>
                     </table>
               </div>
             </div>           

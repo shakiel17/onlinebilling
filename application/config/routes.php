@@ -60,6 +60,8 @@ $route['adminmain'] = 'pages/adminmain';
 $route['admin_authenticate'] = 'pages/admin_authenticate';
 $route['admin'] = 'pages/admin';
 //=========================School Route============================
+$route['save_student'] = 'pages/save_student';
+$route['manage_student'] = 'pages/manage_student';
 $route['save_grade'] = 'pages/save_grade';
 $route['save_course'] = 'pages/save_course';
 $route['course_grade_info'] = 'pages/course_grade_info';

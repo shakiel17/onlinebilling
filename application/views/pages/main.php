@@ -55,7 +55,7 @@
                 <h6 class="card-title">Student Info</h6>
 
                 <p class="card-text">You can manage the information of the students here.</p>
-                <a href="#" class="btn btn-primary"><i class="fas fa-cogs"></i> Manage</a>
+                <a href="<?=base_url('manage_student');?>" class="btn btn-primary"><i class="fas fa-cogs"></i> Manage</a>
               </div>
             </div>
 
@@ -67,7 +67,7 @@
                 <h6 class="card-title">Student Billing</h6>
 
                 <p class="card-text">You can manage the biling of your student here.</p>
-                <a href="#" class="btn btn-primary"><i class="fas fa-cogs"></i> Manage</a>
+                <a href="" class="btn btn-primary"><i class="fas fa-cogs"></i> Manage</a>
               </div>
             </div>
           </div>
