@@ -262,6 +262,25 @@
             }
             redirect(base_url('manage_student_account'));
         }
+        public function manage_billing(){
+            $page = "manage_billing";
+            if(!file_exists(APPPATH.'views/pages/'.$page.".php")){
+                show_404();
+            }
+            if($this->session->user_login){
+                
+            }else{
+                redirect(base_url('main'));
+            }
+            $data['details']=$this->Billing_model->getSchoolDetails($this->session->id);  
+            $data['college'] = $this->Billing_model->getAllStudentByType('college');
+            $data['highschool'] = $this->Billing_model->getAllStudentByType('highschool');
+            $this->load->view('templates/header');
+            $this->load->view('templates/navbar');
+            $this->load->view('pages/'.$page,$data);
+            $this->load->view('templates/modal');
+            $this->load->view('templates/footer');            
+        }
         //===================End of School Module================================================
         
 //======================================================================================================================================
