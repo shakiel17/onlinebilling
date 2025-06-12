@@ -316,3 +316,168 @@
         </div>
         <!-- /.modal-dialog -->
       </div>
+
+      <div class="modal fade" id="ExamFrequency">
+        <div class="modal-dialog modal-sm">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Exam Frequency</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <?php
+              $freq=$this->Billing_model->getExamFrequency();
+              if($freq){
+                $fr=$freq['frequency'];
+              }else{
+                $fr=1;
+              }
+            ?>
+            <form action="<?=base_url('save_exam_frequency');?>" method="POST">                              
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="exampleInputFile">No of Examination</label>
+                    <input type="text" class="form-control" name="frequency" value="<?=$fr;?>" required>
+                  </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+            </form>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+
+      <div class="modal fade" id="ViewStudentDetails">
+        <div class="modal-dialog modal-md">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Student Details</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <p id="student_details"></p>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <!-- <a href="<?=base_url('logout');?>" class="btn btn-danger">Yes, I will go!</a> -->
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+    <div class="modal fade" id="ManageAccountCollege">
+        <div class="modal-dialog modal-md">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Student Account Manager (College)</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form action="<?=base_url('save_student_account');?>" method="POST">                     
+                <input type="hidden" name="student_id" id="account_college_id">
+                <input type="hidden" name="course" id="account_course">
+                <input type="hidden" name="unitcost" id="account_college_unitcost">
+                <input type="hidden" name="type" value="college">
+            <div class="modal-body">                
+                <div class="form-group">
+                    <label for="exampleInputEmail1">No. of Units</label>
+                    <input type="number" class="form-control" name="units" id="account_units" required>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Semester</label>
+                    <select name="semester" class="form-control" id="account_semester" required>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">School Year</label>
+                    <input type="text" class="form-control" name="syear" id="account_syear" placeholder="School Year (YYYY-YYYY)" required>
+                </div>                
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+            </form>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+
+      <div class="modal fade" id="SchoolYear">
+        <div class="modal-dialog modal-md">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Set School Year</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <?php
+            $schoolyear=$this->Billing_model->getSchoolYear();
+            if($schoolyear){
+              $syear=$schoolyear['schoolyear'];
+            }else{
+              $syear="";
+            }
+            ?>
+            <form action="<?=base_url('save_schoolyear');?>" method="POST">                              
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="exampleInputFile">Active School Year</label>                    
+                    <input type="text" name="syear" class="form-control" value="<?=$syear;?>">
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+            </form>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+
+      <div class="modal fade" id="ManageAccountHigh">
+        <div class="modal-dialog modal-md">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Student Account Manager (High School)</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form action="<?=base_url('save_student_account');?>" method="POST">                     
+                <input type="hidden" name="student_id" id="account_hs_id">
+                <input type="hidden" name="course" id="account_grade">
+                <input type="hidden" name="unitcost" id="account_hs_unitcost">
+                <input type="hidden" name="type" value="high">
+            <div class="modal-body">                                
+                <div class="form-group">
+                    <label for="exampleInputEmail1">School Year</label>
+                    <input type="text" class="form-control" name="syear" id="account_syear_hs" placeholder="School Year (YYYY-YYYY)" required>
+                </div>                
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+            </form>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>

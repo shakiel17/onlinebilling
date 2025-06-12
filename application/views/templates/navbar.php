@@ -29,6 +29,8 @@
             <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
               <li><a href="<?=base_url('school_info');?>" class="dropdown-item">School Info </a></li>
               <li><a href="<?=base_url('course_grade_info');?>" class="dropdown-item">Course/Grade Info</a></li>
+              <li><a href="#" class="dropdown-item" data-toggle="modal" data-target="#ExamFrequency">Exam Frequency</a></li>
+              <li><a href="#" class="dropdown-item" data-toggle="modal" data-target="#SchoolYear">Set School Year</a></li>
 
               <li class="dropdown-divider" <?=$view;?>></li>
 

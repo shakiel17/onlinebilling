@@ -60,6 +60,12 @@ $route['adminmain'] = 'pages/adminmain';
 $route['admin_authenticate'] = 'pages/admin_authenticate';
 $route['admin'] = 'pages/admin';
 //=========================School Route============================
+$route['generate_list_hs'] = 'pages/generate_list_hs';
+$route['generate_list_college'] = 'pages/generate_list_college';
+$route['save_schoolyear'] = 'pages/save_schoolyear';
+$route['save_student_account'] = 'pages/save_student_account';
+$route['manage_student_account'] = 'pages/manage_student_account';
+$route['save_exam_frequency'] = 'pages/save_exam_frequency';
 $route['save_student'] = 'pages/save_student';
 $route['manage_student'] = 'pages/manage_student';
 $route['save_grade'] = 'pages/save_grade';

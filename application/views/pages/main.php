@@ -81,7 +81,7 @@
                 <h6 class="card-title">Student Account</h6>
 
                 <p class="card-text">You can manage the account of the students here.</p>
-                <a href="#" class="btn btn-primary"><i class="fas fa-cogs"></i> Manage</a>
+                <a href="<?=base_url('manage_student_account');?>" class="btn btn-primary"><i class="fas fa-cogs"></i> Manage</a>
               </div>
             </div>
 

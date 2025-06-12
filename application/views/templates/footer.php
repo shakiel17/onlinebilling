@@ -221,6 +221,39 @@
           }
         });    
   });
+
+  $('.viewStudentDetails').click(function(){
+    var id=$(this).data('id');
+    $.ajax({
+          url:'<?=base_url();?>index.php/pages/fetchStudentDetails',
+          type:'post',
+          data: {id: id},
+          dataType:'json',
+          success: function(response){
+            document.getElementById('student_details').innerHTML="Student ID: " + response[0]['student_id'] + "<br>Name: " + response[0]['student_lastname'] + ", " + response[0]['student_firstname'] + " " + response[0]['student_middlename'] + 
+            "<br> Address: " + response[0]['student_address'] + "<br>Gender: " + response[0]['student_gender'] + "<br> Birthdate: " + response[0]['student_birthdate'];            
+          }
+        });    
+  });
+
+  $('.editAccountCollege').click(function(){
+    var data=$(this).data('id');
+    var id=data.split('_');
+    document.getElementById('account_college_id').value=id[0];
+    document.getElementById('account_course').value=id[1];
+    document.getElementById('account_college_unitcost').value=id[2];
+    document.getElementById('account_units').value=id[3];
+    document.getElementById('account_semester').value=id[4];
+    document.getElementById('account_syear').value=id[5];
+  });
+  $('.editAccountHigh').click(function(){
+    var data=$(this).data('id');
+    var id=data.split('_');
+    document.getElementById('account_hs_id').value=id[0];
+    document.getElementById('account_grade').value=id[1];
+    document.getElementById('account_hs_unitcost').value=id[2];   
+    document.getElementById('account_syear_hs').value=id[3];   
+  });
 </script>
 </body>
 </html>

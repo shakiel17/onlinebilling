@@ -69,7 +69,7 @@
         }
         public function logout(){
             $userdata=array(
-                'id','staff_id','username','fullname','user_login'
+                'id','staff_id','username','fullname','schoolyear','user_login'
             );
             $this->session->unset_userdata($userdata);
             redirect(base_url());
@@ -196,6 +196,71 @@
             $id=$this->input->post('id');
             $data=$this->Billing_model->fetch_student_details($id);
             echo json_encode($data);
+        }
+        public function save_exam_frequency(){
+            $upload=$this->Billing_model->save_exam_frequency();            
+            if($upload){
+                $this->session->set_flashdata('success','Exam Frequency details successfully saved!');
+            }else{
+                $this->session->set_flashdata('failed','Unable to save exam frequency details!');
+            }
+            redirect(base_url('main'));
+        }
+        public function manage_student_account(){
+            $page = "manage_student_account";
+            if(!file_exists(APPPATH.'views/pages/'.$page.".php")){
+                show_404();
+            }
+            if($this->session->user_login){
+                
+            }else{
+                redirect(base_url('main'));
+            }
+            $data['details']=$this->Billing_model->getSchoolDetails($this->session->id);  
+            $data['college'] = $this->Billing_model->getStudentAccountByType('college');
+            $data['highschool'] = $this->Billing_model->getStudentAccountByType('highschool');
+            $this->load->view('templates/header');
+            $this->load->view('templates/navbar');
+            $this->load->view('pages/'.$page,$data);
+            $this->load->view('templates/modal');
+            $this->load->view('templates/footer');            
+        }
+
+        public function save_student_account(){
+            $upload=$this->Billing_model->save_student_account();            
+            if($upload){
+                $this->session->set_flashdata('success','Student account details successfully saved!');
+            }else{
+                $this->session->set_flashdata('failed','Unable to save student account details!');
+            }
+            redirect(base_url('manage_student_account'));
+        }
+        public function save_schoolyear(){
+            $upload=$this->Billing_model->save_schoolyear();            
+            if($upload){
+                $this->session->set_flashdata('success','School Year successfully set!');
+            }else{
+                $this->session->set_flashdata('failed','Unable to set School Year!');
+            }
+            redirect(base_url('main'));
+        }
+        public function generate_list_college(){
+            $upload=$this->Billing_model->generate_list_college();            
+            if($upload){
+                $this->session->set_flashdata('success','Student list successfully generated!');
+            }else{
+                $this->session->set_flashdata('failed','Unable to generate student list!');
+            }
+            redirect(base_url('manage_student_account'));
+        }
+        public function generate_list_hs(){
+            $upload=$this->Billing_model->generate_list_hs();            
+            if($upload){
+                $this->session->set_flashdata('success','Student list successfully generated!');
+            }else{
+                $this->session->set_flashdata('failed','Unable to generate student list!');
+            }
+            redirect(base_url('manage_student_account'));
         }
         //===================End of School Module================================================
         

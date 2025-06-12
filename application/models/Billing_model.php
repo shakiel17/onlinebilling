@@ -79,11 +79,19 @@
             if($result->num_rows() > 0){
                 $row=$result->row_array();
                 if($row['status']=="approved"){
+                    $query=$this->db->query("SELECT * FROM schoolyear WHERE school_id='$row[school_id]'");
+                    if($query->num_rows() > 0){
+                        $r=$query->row_array();
+                        $syear=$r['schoolyear'];
+                    }else{
+                        $syear="";
+                    }
                     $userdata=array(
                     'id' => $row['school_id'],  
                     'staff_id' => '',
                     'username' => $row['username'],
                     'fullname' => '',
+                    'schoolyear' => $syear,
                     'user_login' => true
                     );
                     $this->session->set_userdata($userdata);
@@ -96,11 +104,19 @@
                 $result=$this->db->query("SELECT * FROM school_staff WHERE username='$user' AND `password`='$pass'");
                 if($result->num_rows()>0){
                     $row=$result->row_array();
+                     $query=$this->db->query("SELECT * FROM schoolyear WHERE school_id='$row[school_id]'");
+                    if($query->num_rows() > 0){
+                        $r=$query->row_array();
+                        $syear=$r['schoolyear'];
+                    }else{
+                        $syear="";
+                    }
                     $userdata=array(
                     'id' => $row['school_id'],  
                     'staff_id' => $row['staff_id'],
                     'username' => $row['username'],
                     'fullname' => $row['staff_name'],
+                    'schoolyear' => $syear,
                     'user_login' => true
                     );
                     $this->session->set_userdata($userdata);
@@ -253,9 +269,18 @@
         public function getAllStudentByType($type){
             $id=$this->session->id;
             if($type=="college"){
-                $result=$this->db->query("SELECT s.*,c.description FROM student s LEFT JOIN course c ON c.id=s.student_course WHERE s.school_id='$id' AND s.student_type='$type' ORDER BY s.student_lastname ASC");
+                $result=$this->db->query("SELECT s.*,c.description,c.amount FROM student s LEFT JOIN course c ON c.id=s.student_course WHERE s.school_id='$id' AND s.student_type='$type' ORDER BY s.student_lastname ASC");
             }else{
-                $result=$this->db->query("SELECT s.*,c.description FROM student s LEFT JOIN grade c ON c.id=s.student_course WHERE s.school_id='$id' AND s.student_type='$type' ORDER BY s.student_lastname ASC");
+                $result=$this->db->query("SELECT s.*,c.description,c.amount FROM student s LEFT JOIN grade c ON c.id=s.student_course WHERE s.school_id='$id' AND s.student_type='$type' ORDER BY s.student_lastname ASC");
+            }
+            return $result->result_array();
+        }
+        public function getStudentAccountByType($type){
+            $id=$this->session->id;
+            if($type=="college"){
+                $result=$this->db->query("SELECT s.*,c.description,c.amount,sac.unitcost,sac.units,sac.semester,sac.syear FROM student s LEFT JOIN course c ON c.id=s.student_course LEFT JOIN student_account_college sac ON sac.student_id=s.student_id WHERE s.school_id='$id' AND s.student_type='$type' ORDER BY s.student_lastname ASC");
+            }else{
+                $result=$this->db->query("SELECT s.*,c.description,c.amount,sah.description as grade,sah.amount as unitcost,sah.grade_level,sah.syear FROM student s LEFT JOIN grade c ON c.id=s.student_course LEFT JOIN student_account_hs sah ON sah.student_id=s.student_id WHERE s.school_id='$id' AND s.student_type='$type' ORDER BY s.student_lastname ASC");
             }
             return $result->result_array();
         }
@@ -293,6 +318,131 @@
         public function fetch_student_details($id){
             $result=$this->db->query("SELECT * FROM student WHERE id='$id'");
             return $result->result_array();
+        }
+        public function save_exam_frequency(){
+            $id=$this->session->id;
+            $frequency=$this->input->post('frequency');
+            $check=$this->db->query("SELECT * FROM exam_frequency WHERE school_id='$id'");
+            if($check->num_rows() > 0){
+                $result=$this->db->query("UPDATE exam_frequency SET frequency='$frequency' WHERE school_id='$id'");
+            }else{
+                $result=$this->db->query("INSERT INTO exam_frequency(school_id,frequency) VALUES('$id','$frequency')");
+            }
+            if($result){
+                return true;
+            }else{
+                return false;
+            }
+        }
+        public function getExamFrequency(){
+            $id=$this->session->id;
+            $result=$this->db->query("SELECT * FROM exam_frequency WHERE school_id='$id'");
+            if($result->num_rows()>0){
+                return $result->row_array();
+            }else{
+                return false;
+            }
+        }
+        public function save_student_account(){
+            $school_id=$this->session->id;
+            $student_id=$this->input->post('student_id');
+            $course=$this->input->post('course');
+            $unitcost=$this->input->post('unitcost');
+            $type=$this->input->post('type');
+            $units=$this->input->post('units');
+            $semester=$this->input->post('semester');
+            $syear=$this->input->post('syear');
+            $date=date('Y-m-d');
+            $time=date('H:i:s');
+            if($type=="college"){
+                $check=$this->db->query("SELECT * FROM student_account_college WHERE school_id='$school_id' AND student_id='$student_id' AND course='$course' AND semester='$semester' AND syear='$syear'");
+                if($check->num_rows() > 0){
+                    $result=$this->db->query("UPDATE student_account_college SET units='$units' WHERE school_id='$school_id' AND student_id='$student_id' AND course='$course' AND semester='$semester' AND syear='$syear'");
+                }else{
+                    $result=$this->db->query("INSERT INTO student_account_college(school_id,student_id,course,unitcost,units,semester,syear,datearray,timearray) VALUES('$school_id','$student_id','$course','$unitcost','$units','$semester','$syear','$date','$time')");
+                }
+            }else{
+                $check=$this->db->query("SELECT * FROM student_account_hs WHERE school_id='$school_id' AND student_id='$student_id' AND `description`='$course' AND syear='$syear'");
+                if($check->num_rows() > 0){
+                    //$result=$this->db->query("UPDATE student_account_hs SET units='$units' WHERE school_id='$school_id' AND student_id='$student_id' AND `description`='$course' AND syear='$syear'");
+                }else{
+                    $result=$this->db->query("INSERT INTO student_account_hs(school_id,student_id,`description`,amount,syear,datearray,timearray) VALUES('$school_id','$student_id','$course','$unitcost','$syear','$date','$time')");
+                }
+            }
+
+            if($result){
+                return true;
+            }else{
+                return false;
+            }
+        }
+        public function getSchoolYear(){
+            $id=$this->session->id;
+            $result=$this->db->query("SELECT * FROM schoolyear WHERE school_id='$id'");
+            if($result->num_rows()>0){
+                return $result->row_array();
+            }else{
+                return false;
+            }
+        }
+        public function save_schoolyear(){
+            $id=$this->session->id;
+            $syear=$this->input->post('syear');
+            $check=$this->db->query("SELECT * FROM schoolyear WHERE school_id='$id'");
+            if($check->num_rows() > 0){
+                $result=$this->db->query("UPDATE schoolyear SET schoolyear='$syear' WHERE school_id='$id'");
+            }else{
+                $result=$this->db->query("INSERT INTO schoolyear(school_id,schoolyear) VALUES('$id','$syear')");
+            }
+            if($result){
+                $this->session->set_userdata('schoolyear',$syear);
+                return true;
+            }else{
+                return false;
+            }
+        }
+        public function generate_list_college(){
+            $id=$this->session->id;
+            $syear=$this->session->schoolyear;
+            $date=date('Y-m-d');
+            $time=date('H:i:s');
+            $query=$this->db->query("SELECT * FROM student_account_college WHERE school_id='$id' GROUP BY student_id");
+            if($query->num_rows() > 0){
+                $result=$query->result_array();
+                foreach($result as $item){
+                    $qry=$this->db->query("SELECT * FROM student WHERE student_id='$item[student_id]' AND school_id='$id'");
+                    $res=$qry->row_array();
+                    $check=$this->db->query("SELECT * FROM student_account_college WHERE school_id='$id' AND student_id='$item[student_id]' AND course='$res[student_course]' AND syear='$syear'");
+                    if($check->num_rows() > 0){
+
+                    }else{
+                        $this->db->query("INSERT INTO student_account_college(school_id,student_id,course,unitcost,units,semester,syear,datearray,timearray) VALUES('$id','$item[student_id]','$res[course]','','','','$syear','$date','$time')");
+                    }
+                }
+                return true;
+            }
+        }
+
+        public function generate_list_hs(){
+            $id=$this->session->id;
+            $syear=$this->session->schoolyear;
+            $date=date('Y-m-d');
+            $time=date('H:i:s');
+            $query=$this->db->query("SELECT * FROM student_account_hs WHERE school_id='$id' GROUP BY student_id");
+            if($query->num_rows() > 0){
+                $result=$query->result_array();
+                foreach($result as $item){
+                    $qry=$this->db->query("SELECT * FROM student WHERE student_id='$item[student_id]' AND school_id='$id'");
+                    $res=$qry->row_array();
+                    $check=$this->db->query("SELECT * FROM student_account_hs WHERE school_id='$id' AND student_id='$item[student_id]' AND `description`='$res[student_course]' AND syear='$syear'");
+                    if($check->num_rows() > 0){
+
+                    }else{
+                        $this->db->query("INSERT INTO student_account_college(school_id,student_id,`description`,amount,syear,datearray,timearray) VALUES('$id','$item[student_id]','$res[course]','','$syear','$date','$time')");
+                    }
+                }
+                return true;
+            }
         }
         //=============================End of School Model===============================================
 

@@ -42,6 +42,13 @@
             </div>
         </div>
     </div>
+    <?php
+    if($this->session->schoolyear==""){
+        $generate="style='display:none;'";
+    }else{
+        $generate="";
+    }
+    ?>
     <!-- Main content -->
     <div class="content">
       <div class="container">
@@ -49,9 +56,9 @@
           <div class="col-lg-12">
             <div class="card">
               <div class="card-header">
-                <h5 class="card-title m-0"><i class="fas fa-building"></i> Student List (College)</h5>
-                <div style="float:right;">
-                    <a href="#" class="btn btn-primary btn-sm addStudentCollege" data-toggle="modal" data-target="#ManageStudentCollege"><i class="fas fa-plus"></i> Add New</a>
+                <h5 class="card-title m-0"><i class="fas fa-graduation-cap"></i> Student Account (College)</h5>
+                <div style="float:right;" <?=$generate;?>>
+                    <a href="<?=base_url('generate_list_college');?>" class="btn btn-primary btn-sm" onclick="return confirm('Do you wish to generate list?');return false;"><i class="fas fa-plus"></i> Generate List</a>
                 </div>
               </div>
               <div class="card-body">
@@ -59,9 +66,13 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Student ID</th>
+                            <th>ID</th>
                             <th>Name</th>
                             <th>Course</th>
+                            <th>Unitcost</th>
+                            <th>Units</th>
+                            <th>Sem/SYear</th>
+                            <th>Total Due</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -69,27 +80,48 @@
                         <?php
                         $x=1;
                         foreach($college as $item){
+                            if($item['unitcost']==""){
+                                $unitcost=$item['amount'];
+                            }else{
+                                $unitcost=$item['unitcost'];
+                            }
+
+                            if($item['units']==""){
+                                $units=0;
+                            }else{
+                                $units=$item['units'];
+                            }
+                            if($this->session->schoolyear==$item['syear']){
+                            $totaldue=$unitcost*$units;
                             echo "<tr>";
                                 echo "<td>$x.</td>";
                                 echo "<td>$item[student_id]</td>";
                                 echo "<td>$item[student_lastname], $item[student_firstname] $item[student_middlename]</td>";
                                 echo "<td>$item[description]</td>";
+                                echo "<td align='right'>".number_format($unitcost,2)."</td>";
+                                echo "<td align='center'>$units</td>";
+                                echo "<td align='center'>$item[semester] / $item[syear]</td>";
+                                echo "<td align='right'>".number_format($totaldue,2)."</td>";
                                 ?>
                                 <td align="center">
-                                    <a href="#" class="btn btn-info btn-sm editStudentCollege" data-toggle="modal" data-target="#ManageStudentCollege" data-id="<?=$item['id'];?>"><i class="fas fa-edit"></i> Edit</a>
-                                    <a href="#" class="btn btn-warning btn-sm viewStudentDetails" data-toggle="modal" data-target="#ViewStudentDetails" data-id="<?=$item['id'];?>"><i class="fas fa-search"></i> View</a>
+                                    <a href="#" class="btn btn-info btn-sm editAccountCollege" data-toggle="modal" data-target="#ManageAccountCollege" data-id="<?=$item['student_id'];?>_<?=$item['student_course'];?>_<?=$unitcost;?>_<?=$item['units'];?>_<?=$item['semester'];?>_<?=$item['syear'];?>"><i class="fas fa-edit"></i> Edit</a>                                   
                                 </td>
                                 <?php
                             echo "</tr>";
+                            }
                         }
                         ?>
                     </tbody>
                     <tfoot>
                         <tr>
                             <th>#</th>
-                            <th>Student ID</th>
+                            <th>ID</th>
                             <th>Name</th>
                             <th>Course</th>
+                            <th>Unitcost</th>
+                            <th>Units</th>
+                            <th>Sem/SYear</th>
+                            <th>Total Due</th>
                             <th>Action</th>
                         </tr>
                     </tfoot>
@@ -101,9 +133,9 @@
           <div class="col-lg-12">
             <div class="card">
               <div class="card-header">
-                <h5 class="card-title m-0"><i class="fas fa-building"></i> Student List (High School)</h5>
-                <div style="float:right;">
-                    <a href="#" class="btn btn-primary btn-sm addStudentHigh" data-toggle="modal" data-target="#ManageStudentHigh"><i class="fas fa-plus"></i> Add New</a>
+                <h5 class="card-title m-0"><i class="fas fa-graduation-cap"></i> Student Account (High School)</h5>
+                <div style="float:right;" <?=$generate;?>>
+                    <a href="<?=base_url('generate_list_hs');?>" class="btn btn-primary btn-sm" onclick="return confirm('Do you wish to generate list?');return false;"><i class="fas fa-plus"></i> Generate List</a>
                 </div>
               </div>
               <div class="card-body">
@@ -114,6 +146,8 @@
                             <th>Student ID</th>
                             <th>Name</th>
                             <th>Grade</th>
+                            <th>Cost/Year</th>
+                            <th>School Year</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -121,18 +155,26 @@
                         <?php
                         $x=1;
                         foreach($highschool as $item){
+                            if($item['unitcost']==""){
+                                $unitcost=$item['amount'];
+                            }else{
+                                $unitcost=$item['unitcost'];
+                            }
+                            if($this->session->schoolyear==$item['syear'] || $item['syear']==""){
                             echo "<tr>";
                                 echo "<td>$x.</td>";
                                 echo "<td>$item[student_id]</td>";
                                 echo "<td>$item[student_lastname], $item[student_firstname] $item[student_middlename]</td>";
                                 echo "<td>$item[description]</td>";
+                                echo "<td align='right'>".number_format($unitcost,2)."</td>";
+                                echo "<td align='center'>$item[syear]</td>";                                
                                 ?>
                                 <td align="center">
-                                    <a href="#" class="btn btn-info btn-sm editStudentHigh" data-toggle="modal" data-target="#ManageStudentHigh" data-id="<?=$item['id'];?>"><i class="fas fa-edit"></i> Edit</a>
-                                    <a href="#" class="btn btn-warning btn-sm viewStudentDetails" data-toggle="modal" data-target="#ViewStudentDetails" data-id="<?=$item['id'];?>"><i class="fas fa-search"></i> View</a>
+                                    <a href="#" class="btn btn-info btn-sm editAccountHigh" data-toggle="modal" data-target="#ManageAccountHigh" data-id="<?=$item['student_id'];?>_<?=$item['student_course'];?>_<?=$unitcost;?>_<?=$item['syear'];?>"><i class="fas fa-edit"></i> Edit</a>                                   
                                 </td>
                                 <?php
                             echo "</tr>";
+                            }
                         }
                         ?>
                     </tbody>
@@ -142,6 +184,8 @@
                             <th>Student ID</th>
                             <th>Name</th>
                             <th>Grade</th>
+                            <th>Cost/Year</th>
+                            <th>School Year</th>
                             <th>Action</th>
                         </tr>
                     </tfoot>
