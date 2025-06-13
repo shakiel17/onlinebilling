@@ -518,9 +518,20 @@
             }else{
               $fr=10;
             }
-                          
+            $bill=$this->Billing_model->getBillHistory($profile['school_id'],$profile['student_id'],$this->session->semester,$this->session->schoolyear,$profile['student_type']);
+            if(count($bill) > 0){
+              $fr = $fr-count($bill);
+            }
+            if($fr <= 0){
+              $fr=1;
+            }
+
+            $payable=$profile['rem_balance']/$fr;
             ?>
             <form action="<?=base_url('save_billing');?>" method="POST">
+              <input type="hidden" name="school_id" value="<?=$profile['school_id'];?>">
+              <input type="hidden" name="student_id" value="<?=$profile['student_id'];?>">
+              <input type="hidden" name="type" value="<?=$profile['student_type'];?>">
             <div class="modal-body">        
               <div class="form-group">
                   <label>Bill Date</label>
@@ -528,7 +539,11 @@
               </div>
               <div class="form-group">
                   <label>Due Date</label>
-                  <input type="date" name="bill_date" class="form-control" value="<?=date('Y-m-d',strtotime('+7 days'));?>">
+                  <input type="date" name="due_date" class="form-control" value="<?=date('Y-m-d',strtotime('+7 days'));?>">
+              </div>
+              <div class="form-group">
+                  <label>Amount</label>
+                  <input type="text" name="bill_amount" class="form-control" value="<?=$payable;?>">
               </div>
             </div>
             <div class="modal-footer justify-content-between">

@@ -64,64 +64,31 @@
               <div class="row">
                 <div class="col-12">
                   <h4>Billing History</h4>
-                    <div class="post">
-                      <div class="user-block">
-                        <img class="img-circle img-bordered-sm" src="<?=base_url('design/assets/dist/img/user1-128x128.jpg');?>" alt="user image">
-                        <span class="username">
-                          <a href="#">Jonathan Burke Jr.</a>
-                        </span>
-                        <span class="description">Shared publicly - 7:45 PM today</span>
-                      </div>
-                      <!-- /.user-block -->
-                      <p>
-                        Lorem ipsum represents a long-held tradition for designers,
-                        typographers and the like. Some people hate it and argue for
-                        its demise, but others ignore.
-                      </p>
-
-                      <p>
-                        <a href="#" class="link-black text-sm"><i class="fas fa-link mr-1"></i> Demo File 1 v2</a>
-                      </p>
-                    </div>
-
+                  <?php
+                  $history=$this->Billing_model->getBillHistory($profile['school_id'],$profile['student_id'],$this->session->semester,$this->session->schoolyear,$profile['student_type']);
+                foreach($history as $bill){
+                  ?>
                     <div class="post clearfix">
-                      <div class="user-block">
-                        <img class="img-circle img-bordered-sm" src="<?=base_url('design/assets/dist/img/user7-128x128.jpg');?>" alt="User Image">
+                      <div class="user-block">                        
+                        <img src="<?=base_url('design/assets/dist/img/billinglogo.png');?>">
                         <span class="username">
-                          <a href="#">Sarah Ross</a>
+                          <a href="#"><?=$bill['refno'];?></a>
                         </span>
-                        <span class="description">Sent you a message - 3 days ago</span>
+                        <span class="description"><?=date('m/d/Y',strtotime($bill['datearray']));?> - <?=date('h:i A',strtotime($bill['timearray']));?></span>
                       </div>
                       <!-- /.user-block -->
                       <p>
-                        Lorem ipsum represents a long-held tradition for designers,
-                        typographers and the like. Some people hate it and argue for
-                        its demise, but others ignore.
-                      </p>
-                      <p>
-                        <a href="#" class="link-black text-sm"><i class="fas fa-link mr-1"></i> Demo File 2</a>
-                      </p>
-                    </div>
-
-                    <div class="post">
-                      <div class="user-block">
-                        <img class="img-circle img-bordered-sm" src="<?=base_url('design/assets/dist/img/user1-128x128.jpg');?>" alt="user image">
-                        <span class="username">
-                          <a href="#">Jonathan Burke Jr.</a>
-                        </span>
-                        <span class="description">Shared publicly - 5 days ago</span>
-                      </div>
-                      <!-- /.user-block -->
-                      <p>
-                        Lorem ipsum represents a long-held tradition for designers,
-                        typographers and the like. Some people hate it and argue for
-                        its demise, but others ignore.
+                        Amount: <?=number_format($bill['amount'],2);?><br>
+                        Payment Due Date: <?=date('m/d/Y',strtotime($bill['due_date']));?>
                       </p>
 
                       <p>
-                        <a href="#" class="link-black text-sm"><i class="fas fa-link mr-1"></i> Demo File 1 v1</a>
+                        <a href="#" class="link-black text-sm"><i class="fas fa-receipt mr-1"></i> View Invoice</a>
                       </p>
                     </div>
+                    <?php
+                    }
+                    ?>
                 </div>
               </div>
             </div>
@@ -175,6 +142,16 @@
                 <p class="text-sm">Semester/School Year
                   <b class="d-block">
                     <?php if($profile['semester']=="1"){ echo "First"; } if($profile['semester']=="2"){ echo "Second"; }?> / <?=$profile['syear'];?></b>
+                </p>
+                <p class="text-sm">Remaining Balance
+                  <b class="d-block">
+                    <?php
+                    if($profile['rem_balance']==""){
+                        echo "0.00";
+                    }else{
+                        echo number_format($profile['rem_balance'],2);
+                    }
+                    ?>                    
                 </p>
               </div>
 

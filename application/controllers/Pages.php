@@ -299,6 +299,17 @@
             $this->load->view('templates/modal',$data);
             $this->load->view('templates/footer');            
         }
+        public function save_billing(){
+            $school_id=$this->input->post('school_id');
+            $student_id=$this->input->post('student_id');
+            $upload=$this->Billing_model->save_billing();            
+            if($upload){
+                $this->session->set_flashdata('success','Student list successfully generated!');
+            }else{
+                $this->session->set_flashdata('failed','Unable to generate student list!');
+            }
+            redirect(base_url('billing_details/'.$school_id."/".$student_id));
+        }
         //===================End of School Module================================================
         
 //======================================================================================================================================

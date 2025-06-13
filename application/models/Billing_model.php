@@ -355,14 +355,15 @@
             $units=$this->input->post('units');
             $semester=$this->input->post('semester');
             $syear=$this->input->post('syear');
+            $rem=$unitcost*$units;
             $date=date('Y-m-d');
             $time=date('H:i:s');
             if($type=="college"){
                 $check=$this->db->query("SELECT * FROM student_account_college WHERE school_id='$school_id' AND student_id='$student_id' AND course='$course' AND semester='$semester' AND syear='$syear'");
                 if($check->num_rows() > 0){
-                    $result=$this->db->query("UPDATE student_account_college SET units='$units' WHERE school_id='$school_id' AND student_id='$student_id' AND course='$course' AND semester='$semester' AND syear='$syear'");
+                    $result=$this->db->query("UPDATE student_account_college SET units='$units',rem_balance='$rem' WHERE school_id='$school_id' AND student_id='$student_id' AND course='$course' AND semester='$semester' AND syear='$syear'");
                 }else{
-                    $result=$this->db->query("INSERT INTO student_account_college(school_id,student_id,course,unitcost,units,semester,syear,datearray,timearray) VALUES('$school_id','$student_id','$course','$unitcost','$units','$semester','$syear','$date','$time')");
+                    $result=$this->db->query("INSERT INTO student_account_college(school_id,student_id,course,unitcost,units,semester,syear,datearray,timearray,rem_balance) VALUES('$school_id','$student_id','$course','$unitcost','$units','$semester','$syear','$date','$time','$rem')");
                 }
             }else{
                 $check=$this->db->query("SELECT * FROM student_account_hs WHERE school_id='$school_id' AND student_id='$student_id' AND `description`='$course' AND syear='$syear'");
@@ -468,7 +469,43 @@
                 }
             }
         }
-        public function getBillHistory
+        public function getBillHistory($school_id,$student_id,$sem,$syear,$type){
+            if($type=="college"){
+                $result=$this->db->query("SELECT * FROM bill_history_college WHERE school_id='$school_id' AND student_id='$student_id' AND semester='$sem' AND syear='$syear'");                
+            }else{
+                $result=$this->db->query("SELECT * FROM bill_history_hs WHERE school_id='$school_id' AND student_id='$student_id' AND syear='$syear'");                
+            }            
+                return $result->result_array();
+        }
+        public function save_billing(){
+            $school_id=$this->input->post('school_id');
+            $student_id=$this->input->post('student_id');
+            $type=$this->input->post('type');
+            $billdate=$this->input->post('bill_date');
+            $duedate=$this->input->post('due_date');
+            $amount=$this->input->post('bill_amount');
+            $time=date('H:i:s');
+            $sem=$this->session->semester;
+            $syear=$this->session->schoolyear;
+                $query=$this->db->query("SELECT * FROM school WHERE school_id='$school_id'");
+                $row=$query->row_array();
+                $school_name=$row['school_name'];
+                $expr = '/(?<=\s|^)\w/iu';
+                preg_match_all($expr, $school_name, $matches);
+                $sname = implode('', $matches[0]);                
+            $refno=$sname."-".date('YmdHis');
+            if($type=="college"){
+                $result=$this->db->query("INSERT INTO bill_history_college(refno,school_id,student_id,amount,semester,syear,amount_paid,remarks,datearray,timearray,`status`,due_date) VALUES('$refno','$school_id','$student_id','$amount','$sem','$syear','0','','$billdate','$time','pending','$duedate')");                
+            }else{
+                $result=$this->db->query("INSERT INTO bill_history_hs(refno,school_id,student_id,amount,syear,amount_paid,remarks,datearray,timearray,`status`,due_date) VALUES('$refno','$school_id','$student_id','$amount','$syear','0','','$billdate','$time','pending','$duedate')");                
+            }
+            if($result){
+                return true;
+            }else{
+                return false;
+            }
+
+        }
         //=============================End of School Model===============================================
 
 //===================================================================================================================================
