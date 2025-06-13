@@ -12,7 +12,7 @@
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="<?=base_url('main');?>">Home</a></li>
-              <li class="breadcrumb-item">Billing Manager</li>
+              <li class="breadcrumb-item active">Billing Manager</li>
               <!-- <li class="breadcrumb-item active">Top Navigation</li> -->
             </ol>
           </div><!-- /.col -->
@@ -61,25 +61,27 @@
                             <th>#</th>
                             <th>Student ID</th>
                             <th>Name</th>
-                            <th>Course</th>
+                            <th>Course</th>                            
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php
+                        <?php                        
                         $x=1;
                         foreach($college as $item){
+                          if($item['semester']==$this->session->semester){
                             echo "<tr>";
                                 echo "<td>$x.</td>";
                                 echo "<td>$item[student_id]</td>";
                                 echo "<td>$item[student_lastname], $item[student_firstname] $item[student_middlename]</td>";
-                                echo "<td>$item[description]</td>";
+                                echo "<td>$item[description]</td>";                                
                                 ?>
                                 <td align="center">
                                     <a href="<?=base_url('billing_details/'.$this->session->id."/".$item['student_id']);?>" class="btn btn-info btn-sm editStudentCollege"><i class="fas fa-file-alt"></i> Billing Details</a>
                                 </td>
                                 <?php
                             echo "</tr>";
+                          }
                         }
                         ?>
                     </tbody>
@@ -88,7 +90,7 @@
                             <th>#</th>
                             <th>Student ID</th>
                             <th>Name</th>
-                            <th>Course</th>
+                            <th>Course</th>                            
                             <th>Action</th>
                         </tr>
                     </tfoot>

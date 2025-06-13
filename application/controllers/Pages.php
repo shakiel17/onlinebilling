@@ -273,12 +273,30 @@
                 redirect(base_url('main'));
             }
             $data['details']=$this->Billing_model->getSchoolDetails($this->session->id);  
-            $data['college'] = $this->Billing_model->getAllStudentByType('college');
+            $data['college'] = $this->Billing_model->getStudentAccountByType('college');
             $data['highschool'] = $this->Billing_model->getAllStudentByType('highschool');
             $this->load->view('templates/header');
             $this->load->view('templates/navbar');
             $this->load->view('pages/'.$page,$data);
             $this->load->view('templates/modal');
+            $this->load->view('templates/footer');            
+        }
+        public function billing_details($school_id,$student_id){
+            $page = "billing_details";
+            if(!file_exists(APPPATH.'views/pages/'.$page.".php")){
+                show_404();
+            }
+            if($this->session->user_login){
+                
+            }else{
+                redirect(base_url('main'));
+            }
+            $data['details']=$this->Billing_model->getSchoolDetails($this->session->id);
+            $data['profile'] = $this->Billing_model->getSingleStudent($school_id,$student_id);
+            $this->load->view('templates/header');
+            $this->load->view('templates/navbar');
+            $this->load->view('pages/'.$page,$data);
+            $this->load->view('templates/modal',$data);
             $this->load->view('templates/footer');            
         }
         //===================End of School Module================================================

@@ -83,8 +83,10 @@
                     if($query->num_rows() > 0){
                         $r=$query->row_array();
                         $syear=$r['schoolyear'];
+                        $sem=$r['semester'];
                     }else{
                         $syear="";
+                        $sem="";
                     }
                     $userdata=array(
                     'id' => $row['school_id'],  
@@ -92,6 +94,7 @@
                     'username' => $row['username'],
                     'fullname' => '',
                     'schoolyear' => $syear,
+                    'semester' => $sem,
                     'user_login' => true
                     );
                     $this->session->set_userdata($userdata);
@@ -276,11 +279,11 @@
             return $result->result_array();
         }
         public function getStudentAccountByType($type){
-            $id=$this->session->id;
+            $id=$this->session->id;            
             if($type=="college"){
-                $result=$this->db->query("SELECT s.*,c.description,c.amount,sac.unitcost,sac.units,sac.semester,sac.syear FROM student s LEFT JOIN course c ON c.id=s.student_course LEFT JOIN student_account_college sac ON sac.student_id=s.student_id WHERE s.school_id='$id' AND s.student_type='$type' ORDER BY s.student_lastname ASC");
+                $result=$this->db->query("SELECT s.*,c.description,c.amount,sac.unitcost,sac.units,sac.semester,sac.syear FROM student s LEFT JOIN course c ON c.id=s.student_course LEFT JOIN student_account_college sac ON sac.student_id=s.student_id WHERE s.school_id='$id' AND s.student_type='$type' ORDER BY s.student_lastname ASC,s.student_firstname ASC");
             }else{
-                $result=$this->db->query("SELECT s.*,c.description,c.amount,sah.description as grade,sah.amount as unitcost,sah.grade_level,sah.syear FROM student s LEFT JOIN grade c ON c.id=s.student_course LEFT JOIN student_account_hs sah ON sah.student_id=s.student_id WHERE s.school_id='$id' AND s.student_type='$type' ORDER BY s.student_lastname ASC");
+                $result=$this->db->query("SELECT s.*,c.description,c.amount,sah.description as grade,sah.amount as unitcost,sah.grade_level,sah.syear FROM student s LEFT JOIN grade c ON c.id=s.student_course LEFT JOIN student_account_hs sah ON sah.student_id=s.student_id WHERE s.school_id='$id' AND s.student_type='$type' ORDER BY s.student_lastname ASC,s.student_firstname ASC");
             }
             return $result->result_array();
         }
@@ -388,14 +391,16 @@
         public function save_schoolyear(){
             $id=$this->session->id;
             $syear=$this->input->post('syear');
+            $sem=$this->input->post('semester');
             $check=$this->db->query("SELECT * FROM schoolyear WHERE school_id='$id'");
             if($check->num_rows() > 0){
-                $result=$this->db->query("UPDATE schoolyear SET schoolyear='$syear' WHERE school_id='$id'");
+                $result=$this->db->query("UPDATE schoolyear SET schoolyear='$syear',semester='$sem' WHERE school_id='$id'");
             }else{
-                $result=$this->db->query("INSERT INTO schoolyear(school_id,schoolyear) VALUES('$id','$syear')");
+                $result=$this->db->query("INSERT INTO schoolyear(school_id,schoolyear,semester) VALUES('$id','$syear','$sem')");
             }
             if($result){
-                $this->session->set_userdata('schoolyear',$syear);
+                $userdata=array('schoolyear' => $syear, 'semester' => $sem);
+                $this->session->set_userdata($userdata);
                 return true;
             }else{
                 return false;
@@ -404,6 +409,7 @@
         public function generate_list_college(){
             $id=$this->session->id;
             $syear=$this->session->schoolyear;
+            $semester=$this->session->semester;
             $date=date('Y-m-d');
             $time=date('H:i:s');
             $query=$this->db->query("SELECT * FROM student_account_college WHERE school_id='$id' GROUP BY student_id");
@@ -412,11 +418,11 @@
                 foreach($result as $item){
                     $qry=$this->db->query("SELECT * FROM student WHERE student_id='$item[student_id]' AND school_id='$id'");
                     $res=$qry->row_array();
-                    $check=$this->db->query("SELECT * FROM student_account_college WHERE school_id='$id' AND student_id='$item[student_id]' AND course='$res[student_course]' AND syear='$syear'");
+                    $check=$this->db->query("SELECT * FROM student_account_college WHERE school_id='$id' AND student_id='$item[student_id]' AND course='$res[student_course]' AND syear='$syear' AND semester='$semester'");
                     if($check->num_rows() > 0){
 
                     }else{
-                        $this->db->query("INSERT INTO student_account_college(school_id,student_id,course,unitcost,units,semester,syear,datearray,timearray) VALUES('$id','$item[student_id]','$res[course]','','','','$syear','$date','$time')");
+                        $this->db->query("INSERT INTO student_account_college(school_id,student_id,course,unitcost,units,semester,syear,datearray,timearray) VALUES('$id','$item[student_id]','$res[course]','','','$semester','$syear','$date','$time')");
                     }
                 }
                 return true;
@@ -444,6 +450,25 @@
                 return true;
             }
         }
+        public function getSingleStudent($school_id,$student_id){
+            $syear=$this->session->schoolyear;
+            $sem=$this->session->semester;
+            $query=$this->db->query("SELECT student_type FROM student WHERE school_id='$school_id' AND student_id='$student_id'");
+            if($query->num_rows()>0){
+                $row=$query->row_array();
+                if($row['student_type']=="college"){
+                    $result=$this->db->query("SELECT s.*,sc.unitcost,sc.units,sc.semester,sc.syear,sc.rem_balance,c.description FROM student s LEFT JOIN student_account_college sc ON sc.student_id=s.student_id AND sc.school_id=s.school_id LEFT JOIN course c ON c.id=s.student_course WHERE s.school_id='$school_id' AND s.student_id='$student_id' AND semester='$sem'");
+                }else{
+                    $result=$this->db->query("SELECT s.*,sc.amount as unitcost,sc.units,sc.grade_level as semester,sc.syear,sc.rem_balance,g.description FROM student s LEFT JOIN student_account_hs sc ON sc.student_id=s.student_id AND sc.school_id=s.school_id LEFT JOIN grade g ON g.id=s.student_course WHERE s.school_id='$school_id' AND s.student_id='$student_id'");                    
+                }
+                if($result->num_rows() > 0){
+                    return $result->row_array();
+                }else{
+                    return  false;
+                }
+            }
+        }
+        public function getBillHistory
         //=============================End of School Model===============================================
 
 //===================================================================================================================================

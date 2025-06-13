@@ -429,8 +429,17 @@
             $schoolyear=$this->Billing_model->getSchoolYear();
             if($schoolyear){
               $syear=$schoolyear['schoolyear'];
+              $sem=$schoolyear['semester'];
             }else{
               $syear="";
+              $sem="";
+            }
+            $one="";$two="";
+            if($sem=="1"){
+              $one="selected";              
+            }
+            if($sem=="2"){
+              $two="selected";              
             }
             ?>
             <form action="<?=base_url('save_schoolyear');?>" method="POST">                              
@@ -438,6 +447,13 @@
                 <div class="form-group">
                     <label for="exampleInputFile">Active School Year</label>                    
                     <input type="text" name="syear" class="form-control" value="<?=$syear;?>">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Semester</label>
+                    <select name="semester" class="form-control" required>                      
+                      <option value="1" <?=$one;?>>1</option>
+                      <option value="2" <?=$two;?>>2</option>
+                    </select>
                 </div>
             </div>
             <div class="modal-footer justify-content-between">
@@ -469,7 +485,7 @@
                 <div class="form-group">
                     <label for="exampleInputEmail1">School Year</label>
                     <input type="text" class="form-control" name="syear" id="account_syear_hs" placeholder="School Year (YYYY-YYYY)" required>
-                </div>                
+                </div>                                
             </div>
             <div class="modal-footer justify-content-between">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -481,3 +497,47 @@
         </div>
         <!-- /.modal-dialog -->
       </div>
+
+      <div class="modal fade" id="ManageBilling">
+        <div class="modal-dialog modal-md">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Billing Details</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <?php
+            if($profile['student_type']=="college"){
+              $freq=$this->Billing_model->getExamFrequency();
+              if($freq){
+                $fr=$freq['frequency'];
+              }else{
+               $fr=1;
+              }
+            }else{
+              $fr=10;
+            }
+                          
+            ?>
+            <form action="<?=base_url('save_billing');?>" method="POST">
+            <div class="modal-body">        
+              <div class="form-group">
+                  <label>Bill Date</label>
+                  <input type="date" name="bill_date" class="form-control" value="<?=date('Y-m-d');?>">
+              </div>
+              <div class="form-group">
+                  <label>Due Date</label>
+                  <input type="date" name="bill_date" class="form-control" value="<?=date('Y-m-d',strtotime('+7 days'));?>">
+              </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Submit</a>
+            </div>
+          </form>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>

@@ -56,7 +56,17 @@
           <div class="col-lg-12">
             <div class="card">
               <div class="card-header">
-                <h5 class="card-title m-0"><i class="fas fa-graduation-cap"></i> Student Account (College)</h5>
+                <h5 class="card-title m-0"><i class="fas fa-graduation-cap"></i> Student Account (College)
+                <?php
+                if($this->session->semester <> ""){
+                  if($this->session->semester=="1"){
+                    echo "First Semester of ".$this->session->schoolyear;
+                  }else{
+                    echo "Second Semester of ".$this->session->schoolyear;
+                  }
+                }
+                ?>
+              </h5>
                 <div style="float:right;" <?=$generate;?>>
                     <a href="<?=base_url('generate_list_college');?>" class="btn btn-primary btn-sm" onclick="return confirm('Do you wish to generate list?');return false;"><i class="fas fa-plus"></i> Generate List</a>
                 </div>
@@ -91,7 +101,7 @@
                             }else{
                                 $units=$item['units'];
                             }
-                            if($this->session->schoolyear==$item['syear']){
+                            if($this->session->schoolyear==$item['syear'] && $this->session->semester==$item['semester']){
                             $totaldue=$unitcost*$units;
                             echo "<tr>";
                                 echo "<td>$x.</td>";
@@ -160,7 +170,7 @@
                             }else{
                                 $unitcost=$item['unitcost'];
                             }
-                            if($this->session->schoolyear==$item['syear'] || $item['syear']==""){
+                            if(($this->session->schoolyear==$item['syear'] || $item['syear']=="")){
                             echo "<tr>";
                                 echo "<td>$x.</td>";
                                 echo "<td>$item[student_id]</td>";
