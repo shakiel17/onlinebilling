@@ -310,6 +310,34 @@
             }
             redirect(base_url('billing_details/'.$school_id."/".$student_id));
         }
+        public function print_invoice($refno,$type){
+            $page = "print_invoice";
+            if(!file_exists(APPPATH.'views/pages/'.$page.".php")){
+                show_404();
+            }
+            // if($this->session->user_login){
+                
+            // }else{
+            //     redirect(base_url('main'));
+            // }
+            $data['details']=$this->Billing_model->getSchoolDetails($this->session->id);
+            $data['invoice'] = $this->Billing_model->getBillingDetails($refno,$type);            
+            $data['invno'] = $refno;
+            // $this->load->view('templates/header');
+            // $this->load->view('templates/navbar');
+            $this->load->view('pages/'.$page,$data);
+            // $this->load->view('templates/modal',$data);
+            // $this->load->view('templates/footer');            
+        }
+        public function save_gcash(){           
+            $upload=$this->Billing_model->save_gcash();            
+            if($upload){
+                $this->session->set_flashdata('success','GCash account successfully saved!');
+            }else{
+                $this->session->set_flashdata('failed','Unable to save GCash account details!');
+            }
+            redirect(base_url('main'));
+        }
         //===================End of School Module================================================
         
 //======================================================================================================================================

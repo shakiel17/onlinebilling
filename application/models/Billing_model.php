@@ -2,7 +2,7 @@
     date_default_timezone_set('Asia/Manila');
     class Billing_model extends CI_model{
         public function __construct(){
-            $this->load->database();
+            $this->load->database();            
         }
         //=============================Start of Admin Model=============================================
         public function admin_authenticate($password){
@@ -505,6 +505,34 @@
                 return false;
             }
 
+        }
+        public function getBillingDetails($refno,$type){
+            if($type=="college"){
+                $result=$this->db->query("SELECT * FROM bill_history_college WHERE refno='$refno'");                
+            }else{
+                $result=$this->db->query("SELECT * FROM bill_history_hs WHERE refno='$refno'");                
+            }            
+                return $result->row_array();
+        }
+        public function save_gcash(){
+            $id=$this->session->id;
+            $number=$this->input->post('accnum');
+            $name=$this->input->post('accname');
+            $fileName=basename($_FILES["file"]["name"]);
+            $fileType=pathinfo($fileName, PATHINFO_EXTENSION);            
+            $image = $_FILES["file"]["tmp_name"];
+            $imgContent=addslashes(file_get_contents($image));
+            $check=$this->db->query("SELECT * FROM gcash WHERE school_id='$id'");
+            if($check->num_rows()>0){
+                $result=$this->db->query("UPDATE gcash SET acctno='$number',acctname='$name',img='$imgContent' WHERE school_id='$id'");
+            }else{
+                $result=$this->db->query("INSERT INTO gcash(school_id,acctno,acctname,img) VALUES('$school_id','$number','$name','$imgContent')");
+            }            
+            if($result){
+                return true;
+            }else{
+                return false;
+            }
         }
         //=============================End of School Model===============================================
 

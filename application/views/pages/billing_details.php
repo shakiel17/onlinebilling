@@ -67,6 +67,11 @@
                   <?php
                   $history=$this->Billing_model->getBillHistory($profile['school_id'],$profile['student_id'],$this->session->semester,$this->session->schoolyear,$profile['student_type']);
                 foreach($history as $bill){
+                  if($bill['status']=="pending"){
+                    $badge="danger";
+                  }else if($bill['status']=="paid"){
+                    $badge="success";
+                  }
                   ?>
                     <div class="post clearfix">
                       <div class="user-block">                        
@@ -79,11 +84,12 @@
                       <!-- /.user-block -->
                       <p>
                         Amount: <?=number_format($bill['amount'],2);?><br>
-                        Payment Due Date: <?=date('m/d/Y',strtotime($bill['due_date']));?>
+                        Payment Due Date: <?=date('m/d/Y',strtotime($bill['due_date']));?><br>
+                        Status: <small class="badge badge-<?=$badge;?>"><?=$bill['status'];?></small>
                       </p>
 
                       <p>
-                        <a href="#" class="link-black text-sm"><i class="fas fa-receipt mr-1"></i> View Invoice</a>
+                        <a href="<?=base_url('print_invoice/'.$bill['refno'].'/college');?>" class="link-black text-sm" target="_blank"><i class="fas fa-receipt mr-1"></i> Print Invoice</a>
                       </p>
                     </div>
                     <?php
@@ -173,9 +179,9 @@
                   <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-file-word"></i> Contract-10_12_2014.docx</a>
                 </li>
               </ul> -->
-              <div class="text-center mt-5 mb-3">
+              <div class="mt-5 mb-3">
                 <a href="#" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#ManageBilling">Add Billing</a>
-                <a href="#" class="btn btn-sm btn-warning">Report contact</a>
+                <!-- <a href="#" class="btn btn-sm btn-warning">Report contact</a> -->
               </div>
             </div>
           </div>

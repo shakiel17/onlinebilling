@@ -556,3 +556,38 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
+
+    <div class="modal fade" id="GCashAccount">
+        <div class="modal-dialog modal-md">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Manage GCash Account</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form action="<?=base_url('save_gcash');?>" method="POST" enctype="multipart/form-data">                                     
+            <div class="modal-body">                                
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Account Number</label>
+                    <input type="text" class="form-control" name="accnum" id="account_syear_hs" placeholder="Phone No. 091xxxxxx" required>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Account Name</label>
+                    <input type="text" class="form-control" name="accname" id="account_syear_hs" placeholder="Account Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">QR Code</label>
+                    <input type="file" class="form-control" name="file" id="account_syear_hs" placeholder="Account Name" required>
+                </div>                                
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+            </form>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
