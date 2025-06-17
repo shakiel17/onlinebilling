@@ -281,7 +281,7 @@
         public function getStudentAccountByType($type){
             $id=$this->session->id;            
             if($type=="college"){
-                $result=$this->db->query("SELECT s.*,c.description,c.amount,sac.unitcost,sac.units,sac.semester,sac.syear FROM student s LEFT JOIN course c ON c.id=s.student_course LEFT JOIN student_account_college sac ON sac.student_id=s.student_id WHERE s.school_id='$id' AND s.student_type='$type' ORDER BY s.student_lastname ASC,s.student_firstname ASC");
+                $result=$this->db->query("SELECT s.*,c.description,c.amount,sac.unitcost,sac.units,sac.semester,sac.syear FROM student s LEFT JOIN course c ON c.id=s.student_course LEFT JOIN student_account_college sac ON sac.student_id=s.student_id AND sac.school_id=s.school_id WHERE s.school_id='$id' AND s.student_type='$type' AND c.school_id='$id' ORDER BY s.student_lastname ASC,s.student_firstname ASC");
             }else{
                 $result=$this->db->query("SELECT s.*,c.description,c.amount,sah.description as grade,sah.amount as unitcost,sah.grade_level,sah.syear FROM student s LEFT JOIN grade c ON c.id=s.student_course LEFT JOIN student_account_hs sah ON sah.student_id=s.student_id WHERE s.school_id='$id' AND s.student_type='$type' ORDER BY s.student_lastname ASC,s.student_firstname ASC");
             }
@@ -301,7 +301,7 @@
             $course=$this->input->post('course');
             $date=date('Y-m-d');
             $time=date('H:i:s');
-            $check=$this->db->query("SELECT * FROM student WHERE student_id='$student_id' AND id <> '$id'");
+            $check=$this->db->query("SELECT * FROM student WHERE student_id='$student_id' AND school_id='$school_id' AND id <> '$id'");
             if($check->num_rows()>0){
                 return false;
             }else{

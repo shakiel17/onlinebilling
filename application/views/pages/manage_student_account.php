@@ -101,7 +101,7 @@
                             }else{
                                 $units=$item['units'];
                             }
-                            if($this->session->schoolyear==$item['syear'] && $this->session->semester==$item['semester']){
+                            if($this->session->schoolyear==$item['syear'] && $this->session->semester==$item['semester'] || $item['unitcost']==""){
                             $totaldue=$unitcost*$units;
                             echo "<tr>";
                                 echo "<td>$x.</td>";

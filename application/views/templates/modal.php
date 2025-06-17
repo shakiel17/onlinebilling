@@ -567,16 +567,23 @@
             </div>
             <?php
             $cash=$this->Billing_model->getGCashDetails();
+            if($cash){
+              $number=$cash['acctno'];
+              $name=$cash['acctname'];
+            }else{
+              $number="";
+              $name="";
+            }
             ?>
             <form action="<?=base_url('save_gcash');?>" method="POST" enctype="multipart/form-data">                                     
             <div class="modal-body">                                
                 <div class="form-group">
                     <label for="exampleInputEmail1">Account Number</label>
-                    <input type="text" class="form-control" name="accnum" id="account_syear_hs" placeholder="Phone No. 091xxxxxx" required value="<?=$cash['acctno'];?>">
+                    <input type="text" class="form-control" name="accnum" id="account_syear_hs" placeholder="Phone No. 091xxxxxx" required value="<?=$number;?>">
                 </div>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Account Name</label>
-                    <input type="text" class="form-control" name="accname" id="account_syear_hs" placeholder="Account Name" required value="<?=$cash['acctname'];?>">
+                    <input type="text" class="form-control" name="accname" id="account_syear_hs" placeholder="Account Name" required value="<?=$name;?>">
                 </div>
                 <div class="form-group">
                     <label for="exampleInputEmail1">QR Code</label>

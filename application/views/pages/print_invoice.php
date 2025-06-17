@@ -94,6 +94,9 @@
         if($cash){
           $number=$cash['acctno'];
           $name=$cash['acctname'];          
+        }else{
+          $number="";
+          $name="";
         }
         ?>
     <div class="row">
