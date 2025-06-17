@@ -581,10 +581,7 @@
                 <div class="form-group">
                     <label for="exampleInputEmail1">QR Code</label>
                     <input type="file" class="form-control" name="file" id="account_syear_hs" placeholder="Account Name" required>
-                </div>
-                <div class="form-group">                    
-                    <input type="file" class="form-control" name="file" id="account_syear_hs" placeholder="Account Name" required>
-                </div>                          
+                </div>                                          
             </div>
             <div class="modal-footer justify-content-between">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
