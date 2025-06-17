@@ -16,11 +16,15 @@
 <body>
     <?php
     $student = $this->Billing_model->getSingleStudent($details['school_id'],$invoice['student_id']);
-    if($invoice['semester']=="1"){
+    if($student['student_type']=="college"){
+      if($invoice['semester']=="1"){
         $sem="First";        
     }else{
         $sem="Second";        
     }
+    }else{
+      $sem="";
+    }    
     ?>
 <div class="wrapper">
   <!-- Main content -->
@@ -85,45 +89,38 @@
       <!-- /.col -->
     </div>
     <!-- /.row -->
-
+ <?php        
+        $cash=$this->Billing_model->getGCashDetails();
+        if($cash){
+          $number=$cash['acctno'];
+          $name=$cash['acctname'];          
+        }
+        ?>
     <div class="row">
       <!-- accepted payments column -->
       <div class="col-6">
         <p class="lead">Payment Method:</p>
-        <img src="<?=base_url('design/assets/dist/img/credit/gcashlogo.png');?>" alt="GCash" width="50">        09107524284         
+        <img src="<?=base_url('design/assets/dist/img/credit/gcashlogo.png');?>" alt="GCash" width="50"><br>Account Name: <b><?=$name;?></b><br>Account No.: <b><?=$number;?></b>         
         <!-- <img src="../../dist/img/credit/american-express.png" alt="American Express">
-        <img src="../../dist/img/credit/paypal2.png" alt="Paypal"> -->
-
+        <img src="../../dist/img/credit/paypal2.png" alt="Paypal"> -->       
         <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">
-          You can pay thru Gcash by <a href="<?=base_url('view_qrCode/'.$this->session->school_id);?>" target="_blank">Scanning</a> or Manually input the merchant account number.
+          You can pay thru Gcash by <a href="<?=base_url('view_qrCode/'.$this->session->id);?>" target="_blank">Scanning</a> or Manually input the merchant account number.
         </p>
         <!-- <img src="<?=base_url('design/assets/dist/img/gcash.jpg');?>" alt="Mastercard" width="200"> -->
       </div>
       <!-- /.col -->
-      <div class="col-6">
-        <p class="lead">Amount Due 2/22/2014</p>
+      <!-- <div class="col-6">
+        <p class="lead">Amount Due <?=date('m/d/Y',strtotime($invoice['due_date']));?></p>
 
         <div class="table-responsive">
           <table class="table">
             <tr>
-              <th style="width:50%">Subtotal:</th>
-              <td>$250.30</td>
-            </tr>
-            <tr>
-              <th>Tax (9.3%)</th>
-              <td>$10.34</td>
-            </tr>
-            <tr>
-              <th>Shipping:</th>
-              <td>$5.80</td>
-            </tr>
-            <tr>
-              <th>Total:</th>
-              <td>$265.24</td>
-            </tr>
+              <th style="width:50%">Total:</th>
+              <td><?=number_format($invoice['amount'],2);?></td>
+            </tr>            
           </table>
         </div>
-      </div>
+      </div> -->
       <!-- /.col -->
     </div>
     <!-- /.row -->

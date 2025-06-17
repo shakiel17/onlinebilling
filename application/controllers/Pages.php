@@ -61,6 +61,7 @@
             $data['address'] = $details['school_address'];
             $data['email'] = $details['school_email'];
             $data['contactno'] = $details['school_contact'];
+            $data['student_id'] = '';
             $this->load->view('templates/header');
             $this->load->view('templates/navbar');
             $this->load->view('pages/'.$page,$data);
@@ -84,7 +85,8 @@
             }else{
                 redirect(base_url('main'));
             }
-            $data['details']=$this->Billing_model->getSchoolDetails($this->session->id);            
+            $data['details']=$this->Billing_model->getSchoolDetails($this->session->id);    
+            $data['student_id'] = '';        
             $this->load->view('templates/header');
             $this->load->view('templates/navbar');
             $this->load->view('pages/'.$page,$data);
@@ -140,6 +142,7 @@
             $data['details']=$this->Billing_model->getSchoolDetails($this->session->id);
             $data['courses'] = $this->Billing_model->getAllCourse();            
             $data['grades'] = $this->Billing_model->getAllGrade();
+            $data['student_id'] = '';
             $this->load->view('templates/header');
             $this->load->view('templates/navbar');
             $this->load->view('pages/'.$page,$data);
@@ -177,6 +180,7 @@
             $data['details']=$this->Billing_model->getSchoolDetails($this->session->id);  
             $data['college'] = $this->Billing_model->getAllStudentByType('college');
             $data['highschool'] = $this->Billing_model->getAllStudentByType('highschool');
+            $data['student_id'] = '';
             $this->load->view('templates/header');
             $this->load->view('templates/navbar');
             $this->load->view('pages/'.$page,$data);
@@ -219,6 +223,7 @@
             $data['details']=$this->Billing_model->getSchoolDetails($this->session->id);  
             $data['college'] = $this->Billing_model->getStudentAccountByType('college');
             $data['highschool'] = $this->Billing_model->getStudentAccountByType('highschool');
+            $data['student_id'] = '';
             $this->load->view('templates/header');
             $this->load->view('templates/navbar');
             $this->load->view('pages/'.$page,$data);
@@ -275,6 +280,7 @@
             $data['details']=$this->Billing_model->getSchoolDetails($this->session->id);  
             $data['college'] = $this->Billing_model->getStudentAccountByType('college');
             $data['highschool'] = $this->Billing_model->getAllStudentByType('highschool');
+            $data['student_id'] = '';
             $this->load->view('templates/header');
             $this->load->view('templates/navbar');
             $this->load->view('pages/'.$page,$data);
@@ -292,7 +298,9 @@
                 redirect(base_url('main'));
             }
             $data['details']=$this->Billing_model->getSchoolDetails($this->session->id);
-            $data['profile'] = $this->Billing_model->getSingleStudent($school_id,$student_id);
+            $data['profile'] = $this->Billing_model->getSingleStudent($school_id,$student_id);   
+            $data['student_id'] = $student_id;
+            $data['school_id'] = $school_id;            
             $this->load->view('templates/header');
             $this->load->view('templates/navbar');
             $this->load->view('pages/'.$page,$data);
@@ -337,6 +345,23 @@
                 $this->session->set_flashdata('failed','Unable to save GCash account details!');
             }
             redirect(base_url('main'));
+        }
+        public function view_qrCode($id){
+            $page = "gcash";
+            if(!file_exists(APPPATH.'views/pages/'.$page.".php")){
+                show_404();
+            }
+            // if($this->session->user_login){
+                
+            // }else{
+            //     redirect(base_url('main'));
+            // }
+            $data['details']=$this->Billing_model->getGCashDetails($id);                        
+            // $this->load->view('templates/header');
+            // $this->load->view('templates/navbar');
+            $this->load->view('pages/'.$page,$data);
+            // $this->load->view('templates/modal',$data);
+            // $this->load->view('templates/footer');            
         }
         //===================End of School Module================================================
         

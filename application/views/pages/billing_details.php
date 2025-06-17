@@ -89,7 +89,7 @@
                       </p>
 
                       <p>
-                        <a href="<?=base_url('print_invoice/'.$bill['refno'].'/college');?>" class="link-black text-sm" target="_blank"><i class="fas fa-receipt mr-1"></i> Print Invoice</a>
+                        <a href="<?=base_url('print_invoice/'.$bill['refno'].'/'.$profile['student_type']);?>" class="link-black text-sm" target="_blank"><i class="fas fa-receipt mr-1"></i> Print Invoice</a>
                       </p>
                     </div>
                     <?php

@@ -129,8 +129,7 @@
                                 echo "<td>$item[description]</td>";
                                 ?>
                                 <td align="center">
-                                    <a href="#" class="btn btn-info btn-sm editStudentHigh" data-toggle="modal" data-target="#ManageStudentHigh" data-id="<?=$item['id'];?>"><i class="fas fa-edit"></i> Edit</a>
-                                    <a href="#" class="btn btn-warning btn-sm viewStudentDetails" data-toggle="modal" data-target="#ViewStudentDetails" data-id="<?=$item['id'];?>"><i class="fas fa-search"></i> View</a>
+                                    <a href="<?=base_url('billing_details/'.$this->session->id."/".$item['student_id']);?>" class="btn btn-info btn-sm editStudentCollege"><i class="fas fa-file-alt"></i> Billing Details</a>
                                 </td>
                                 <?php
                             echo "</tr>";

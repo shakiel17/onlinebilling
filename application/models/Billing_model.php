@@ -368,7 +368,7 @@
             }else{
                 $check=$this->db->query("SELECT * FROM student_account_hs WHERE school_id='$school_id' AND student_id='$student_id' AND `description`='$course' AND syear='$syear'");
                 if($check->num_rows() > 0){
-                    //$result=$this->db->query("UPDATE student_account_hs SET units='$units' WHERE school_id='$school_id' AND student_id='$student_id' AND `description`='$course' AND syear='$syear'");
+                    $result=$this->db->query("UPDATE student_account_hs SET rem_balance='$unitcost' WHERE school_id='$school_id' AND student_id='$student_id' AND `description`='$course' AND syear='$syear'");
                 }else{
                     $result=$this->db->query("INSERT INTO student_account_hs(school_id,student_id,`description`,amount,syear,datearray,timearray) VALUES('$school_id','$student_id','$course','$unitcost','$syear','$date','$time')");
                 }
@@ -460,7 +460,7 @@
                 if($row['student_type']=="college"){
                     $result=$this->db->query("SELECT s.*,sc.unitcost,sc.units,sc.semester,sc.syear,sc.rem_balance,c.description FROM student s LEFT JOIN student_account_college sc ON sc.student_id=s.student_id AND sc.school_id=s.school_id LEFT JOIN course c ON c.id=s.student_course WHERE s.school_id='$school_id' AND s.student_id='$student_id' AND semester='$sem'");
                 }else{
-                    $result=$this->db->query("SELECT s.*,sc.amount as unitcost,sc.units,sc.grade_level as semester,sc.syear,sc.rem_balance,g.description FROM student s LEFT JOIN student_account_hs sc ON sc.student_id=s.student_id AND sc.school_id=s.school_id LEFT JOIN grade g ON g.id=s.student_course WHERE s.school_id='$school_id' AND s.student_id='$student_id'");                    
+                    $result=$this->db->query("SELECT s.*,sc.amount as unitcost,sc.grade_level as semester,sc.syear,sc.rem_balance,g.description FROM student s LEFT JOIN student_account_hs sc ON sc.student_id=s.student_id AND sc.school_id=s.school_id LEFT JOIN grade g ON g.id=s.student_course WHERE s.school_id='$school_id' AND s.student_id='$student_id'");                    
                 }
                 if($result->num_rows() > 0){
                     return $result->row_array();
@@ -526,13 +526,18 @@
             if($check->num_rows()>0){
                 $result=$this->db->query("UPDATE gcash SET acctno='$number',acctname='$name',img='$imgContent' WHERE school_id='$id'");
             }else{
-                $result=$this->db->query("INSERT INTO gcash(school_id,acctno,acctname,img) VALUES('$school_id','$number','$name','$imgContent')");
+                $result=$this->db->query("INSERT INTO gcash(school_id,acctno,acctname,img) VALUES('$id','$number','$name','$imgContent')");
             }            
             if($result){
                 return true;
             }else{
                 return false;
             }
+        }
+        public function getGCashDetails(){
+            $id=$this->session->id;
+            $result=$this->db->query("SELECT * FROM gcash WHERE school_id='$id'");
+            return $result->row_array();
         }
         //=============================End of School Model===============================================
 

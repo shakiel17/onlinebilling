@@ -60,6 +60,7 @@ $route['adminmain'] = 'pages/adminmain';
 $route['admin_authenticate'] = 'pages/admin_authenticate';
 $route['admin'] = 'pages/admin';
 //=========================School Route============================
+$route['view_qrCode/(:any)'] = 'pages/view_qrCode/$1';
 $route['save_gcash'] = 'pages/save_gcash';
 $route['print_invoice/(:any)/(:any)'] = 'pages/print_invoice/$1/$2';
 $route['save_billing'] = 'pages/save_billing';

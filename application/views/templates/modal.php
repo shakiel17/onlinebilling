@@ -506,8 +506,9 @@
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
-            </div>
+            </div>            
             <?php
+            $profile = $this->Billing_model->getSingleStudent($school_id,$student_id);
             if($profile['student_type']=="college"){
               $freq=$this->Billing_model->getExamFrequency();
               if($freq){
@@ -529,8 +530,8 @@
             $payable=$profile['rem_balance']/$fr;
             ?>
             <form action="<?=base_url('save_billing');?>" method="POST">
-              <input type="hidden" name="school_id" value="<?=$profile['school_id'];?>">
-              <input type="hidden" name="student_id" value="<?=$profile['student_id'];?>">
+              <input type="hidden" name="school_id" value="<?=$school_id;?>">
+              <input type="hidden" name="student_id" value="<?=$student_id;?>">
               <input type="hidden" name="type" value="<?=$profile['student_type'];?>">
             <div class="modal-body">        
               <div class="form-group">
@@ -552,9 +553,7 @@
             </div>
           </form>
           </div>
-          <!-- /.modal-content -->
         </div>
-        <!-- /.modal-dialog -->
     </div>
 
     <div class="modal fade" id="GCashAccount">
@@ -566,20 +565,26 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
+            <?php
+            $cash=$this->Billing_model->getGCashDetails();
+            ?>
             <form action="<?=base_url('save_gcash');?>" method="POST" enctype="multipart/form-data">                                     
             <div class="modal-body">                                
                 <div class="form-group">
                     <label for="exampleInputEmail1">Account Number</label>
-                    <input type="text" class="form-control" name="accnum" id="account_syear_hs" placeholder="Phone No. 091xxxxxx" required>
+                    <input type="text" class="form-control" name="accnum" id="account_syear_hs" placeholder="Phone No. 091xxxxxx" required value="<?=$cash['acctno'];?>">
                 </div>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Account Name</label>
-                    <input type="text" class="form-control" name="accname" id="account_syear_hs" placeholder="Account Name" required>
+                    <input type="text" class="form-control" name="accname" id="account_syear_hs" placeholder="Account Name" required value="<?=$cash['acctname'];?>">
                 </div>
                 <div class="form-group">
                     <label for="exampleInputEmail1">QR Code</label>
                     <input type="file" class="form-control" name="file" id="account_syear_hs" placeholder="Account Name" required>
-                </div>                                
+                </div>
+                <div class="form-group">                    
+                    <input type="file" class="form-control" name="file" id="account_syear_hs" placeholder="Account Name" required>
+                </div>                          
             </div>
             <div class="modal-footer justify-content-between">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
