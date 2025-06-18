@@ -544,6 +544,118 @@
 //===================================================================================================================================
 
         //=============================Start of Guardian Model=============================================
+        public function user_registration(){
+            $school_id=$this->input->post('school');
+            $id="G".date('YmdHis');
+            $fullanme=$this->input->post('fullname');
+            $email=$this->input->post('email');
+            $contactno=$this->input->post('contactno');
+            $username=$this->input->post('username');
+            $password=$this->input->post('password');
+            $date=date('Y-m-d');
+            $time=date('H:i:s');
+            $check=$this->db->query("SELECT * FROM guardian WHERE g_username='$username'");
+            if($check->num_rows()>0){
+                return false;
+            }else{
+                $result=$this->db->query("INSERT INTO guardian(school_id,g_id,g_name,g_email,g_contact,g_username,g_password,datearray,timearray) VALUES('$school_id','$id','$fullanme','$email','$contactno','$username','$password','$date','$time')");
+                if($result){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+        }
+        public function user_authenticate($username,$password){
+            $result=$this->db->query("SELECT * FROM guardian WHERE g_username='$username' AND g_password='$password'");
+            if($result->num_rows()>0){
+                $item=$result->row_array();
+                $userdata=array(
+                    'school_id' => $item['school_id'],
+                    'username' => $item['g_username'],
+                    'fullname' => $item['g_name'],
+                    'guard_id' => $item['g_id'],
+                    'guard_login' => true
+                );
+                $this->session->set_userdata($userdata);
+                return true;                
+            }else{
+                $this->session->set_flashdata('error','Invalid username and password!');
+                return false;
+            }
 
+        }
+        public function getGuardianDetails($id,$school_id){
+            $result=$this->db->query("SELECT * FROM guardian WHERE g_id='$id' AND school_id='$school_id'");
+            if($result->num_rows()>0){
+                return $result->row_array();                
+            }else{
+                return false;
+            }
+        }
+        public function getGuardianStudents($id,$school_id,$type){
+            if($type=="college"){
+                $result=$this->db->query("SELECT g.*,s.student_lastname,s.student_firstname,s.student_middlename,c.description FROM guardian_details g INNER JOIN student s ON s.student_id=g.student_id AND s.school_id=g.school_id LEFT JOIN course c ON c.id=s.student_course WHERE g.school_id='$school_id' AND g.g_id='$id' AND s.student_type='$type'");
+            }else{
+                $result=$this->db->query("SELECT g.*,s.student_lastname,s.student_firstname,s.student_middlename,c.description FROM guardian_details g INNER JOIN student s ON s.student_id=g.student_id AND s.school_id=g.school_id LEFT JOIN grade c ON c.id=s.student_course WHERE g.school_id='$school_id' AND g.g_id='$id' AND s.student_type='$type'");
+            }
+            return $result->result_array();
+        }
+        public function getAllStudentBySchool($type){
+            $id=$this->session->school_id;
+            if($type=="college"){
+                $result=$this->db->query("SELECT s.*,c.description,c.amount FROM student s LEFT JOIN course c ON c.id=s.student_course WHERE s.school_id='$id' AND s.student_type='$type' ORDER BY s.student_lastname ASC");
+            }else{
+                $result=$this->db->query("SELECT s.*,c.description,c.amount FROM student s LEFT JOIN grade c ON c.id=s.student_course WHERE s.school_id='$id' AND s.student_type='$type' ORDER BY s.student_lastname ASC");
+            }
+            return $result->result_array();
+        }
+        public function user_add_student($id){
+            $school_id=$this->session->school_id;
+            $guard_id=$this->session->guard_id;
+            $date=date('Y-m-d');
+            $time=date('H:i:s');
+            $check=$this->db->query("SELECT * FROM guardian_details WHERE school_id='$school_id' AND student_id='$id'");
+            if($check->num_rows()>0){
+                return false;
+            }else{
+                $result=$this->db->query("INSERT INTO guardian_details(school_id,g_id,student_id,datearray,timearray) VALUES('$school_id','$guard_id','$id','$date','$time')");
+                if($result){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+        }
+        public function user_delete_student($id){            
+                $result=$this->db->query("DELETE FROM guardian_details WHERE id='$id'");
+                if($result){
+                    return true;
+                }else{
+                    return false;
+                }            
+        }
+        public function update_user_profile(){
+            $school_id=$this->session->school_id;
+            $id=$this->session->guard_id;
+            $fullanme=$this->input->post('fullname');
+            $email=$this->input->post('email');
+            $contactno=$this->input->post('contactno');
+            $username=$this->input->post('username');
+            $password=$this->input->post('password');
+            $date=date('Y-m-d');
+            $time=date('H:i:s');
+            $check=$this->db->query("SELECT * FROM guardian WHERE school_id='$school_id' AND g_username='$username' AND g_id <> '$id'");
+            if($check->num_rows() > 0){
+                return false;
+            }else{
+                $result=$this->db->query("UPDATE guardian SET g_name='$fullanme',g_email='$email',g_contact='$contactno',g_username='$username',g_password='$password' WHERE school_id='$school_id' AND g_id='$id'");
+                if($result){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+        }
         //=============================End of Guardian Model===============================================
     }

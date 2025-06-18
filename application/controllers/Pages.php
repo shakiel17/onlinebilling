@@ -555,5 +555,105 @@ Thank you and God bless.";
             redirect(base_url('pending_request'));
         }
         //===================End of Admin Module================================================
+
+//======================================================================================================================
+
+        //===================Start of User Module================================================
+        public function user(){
+            $page = "index";
+            if(!file_exists(APPPATH.'views/pages/user/'.$page.".php")){
+                show_404();
+            }
+            if($this->session->guardian_login){
+                redirect(base_url('usermain'));
+            }
+            $this->load->view('pages/user/'.$page);            
+        }
+        public function usermain(){
+            $page = "main";
+            if(!file_exists(APPPATH.'views/pages/user/'.$page.".php")){
+                show_404();
+            }
+            if($this->session->guard_login){
+                
+            }else{
+                redirect(base_url('user'));
+            }
+            $data['title'] = "User Profile";   
+            $data['guard'] = $this->Billing_model->getGuardianDetails($this->session->guard_id,$this->session->school_id); 
+            $data['student_college'] = $this->Billing_model->getGuardianStudents($this->session->guard_id,$this->session->school_id,'college');
+            $data['student_high'] = $this->Billing_model->getGuardianStudents($this->session->guard_id,$this->session->school_id,'highschool');
+            $this->load->view('templates/header');
+            $this->load->view('templates/user/navbar');
+            $this->load->view('templates/user/sidebar');
+            $this->load->view('pages/user/'.$page,$data);
+            $this->load->view('templates/user/modal',$data);
+            $this->load->view('templates/footer');
+        }
+        public function user_register(){
+            $page = "register";
+            if(!file_exists(APPPATH.'views/pages/user/'.$page.".php")){
+                show_404();
+            }
+            if($this->session->user_login){
+                redirect(base_url('usermain'));
+            }
+            $this->load->view('pages/user/'.$page);            
+        }
+        public function user_registration(){
+            $register=$this->Billing_model->user_registration();           
+            if($register){
+               $this->session->set_flashdata('remarks','You have successfully registered. Please sign in to start your session.');
+               redirect(base_url('user'));
+            }else{               
+               redirect(base_url('user_register'));
+            }                
+           
+        }
+        public function user_authenticate(){
+            $username=$this->input->post('username');
+            $password=$this->input->post('password');
+            $data=$this->Billing_model->user_authenticate($username,$password);
+            if($data){                
+                redirect(base_url('usermain'));
+            }else{
+                redirect(base_url('user'));
+            }
+        }
+        public function user_logout(){
+            $userdata=array(
+                'school_id','guard_id','username','fullname','guard_login'
+            );
+            $this->session->unset_userdata($userdata);
+            redirect(base_url('user'));
+        }
+        public function user_add_student($id){            
+            $data=$this->Billing_model->user_add_student($id);
+            if($data){             
+                $this->session->set_flashdata('success','Student details successfully added!');                
+            }else{
+                $this->session->set_flashdata('failed','Unable to add student details!');                
+            }
+            redirect(base_url('usermain'));
+        }
+        public function user_delete_student($id){            
+            $data=$this->Billing_model->user_delete_student($id);
+            if($data){             
+                $this->session->set_flashdata('success','Student details successfully deleted!');                
+            }else{
+                $this->session->set_flashdata('failed','Unable to delete student details!');                
+            }
+            redirect(base_url('usermain'));
+        }
+        public function update_user_profile(){
+            $data=$this->Billing_model->update_user_profile();
+            if($data){             
+                $this->session->set_flashdata('success','User profile successfully updated!');                
+            }else{
+                $this->session->set_flashdata('failed','Unable to update yser profile!');                
+            }
+            redirect(base_url('usermain'));
+        }
+        //===================End of User Module================================================
     }
 ?>
