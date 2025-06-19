@@ -76,3 +76,66 @@
         </div>
         <!-- /.modal-dialog -->
       </div>
+
+      <div class="modal fade" id="PostPayment">
+        <div class="modal-dialog modal-md">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Post Payment</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form action="<?=base_url('post_payment');?>" method="POST" enctype="multipart/form-data">
+              <input type="hidden" name="refno" id="pay_refno">
+              <input type="hidden" name="type" id="pay_type">
+              <input type="hidden" name="student_id" id="pay_student_id">
+            <div class="modal-body">
+              <div class="form-group">
+                <label>Amount Due</label>
+                <input type="text" name="amount_due" class="form-control" id="pay_amount" readonly>
+              </div>
+              <div class="form-group">
+                <label>Amount to pay</label>
+                <input type="text" name="amount" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label>Transaction #</label>
+                <input type="text" name="txno" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label>Proof of Payment</label>
+                <input type="file" name="file" class="form-control" required>
+              </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Post</a>
+            </div>
+              </form>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+
+      <div class="modal fade" id="ViewPayment">
+        <div class="modal-dialog modal-md">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Payment Details</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>            
+            <div class="modal-body">
+              <p id="payment_details"></p>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>              
+            </div>              
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>

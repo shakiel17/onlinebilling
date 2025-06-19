@@ -580,9 +580,9 @@ Thank you and God bless.";
                 redirect(base_url('user'));
             }
             $data['title'] = "User Profile";   
-            $data['guard'] = $this->Billing_model->getGuardianDetails($this->session->guard_id,$this->session->school_id); 
-            $data['student_college'] = $this->Billing_model->getGuardianStudents($this->session->guard_id,$this->session->school_id,'college');
-            $data['student_high'] = $this->Billing_model->getGuardianStudents($this->session->guard_id,$this->session->school_id,'highschool');
+            $data['guard'] = $this->Billing_model->getGuardianDetails($this->session->guard_id,$this->session->id); 
+            $data['student_college'] = $this->Billing_model->getGuardianStudents($this->session->guard_id,$this->session->id,'college');
+            $data['student_high'] = $this->Billing_model->getGuardianStudents($this->session->guard_id,$this->session->id,'highschool');
             $this->load->view('templates/header');
             $this->load->view('templates/user/navbar');
             $this->load->view('templates/user/sidebar');
@@ -650,9 +650,62 @@ Thank you and God bless.";
             if($data){             
                 $this->session->set_flashdata('success','User profile successfully updated!');                
             }else{
-                $this->session->set_flashdata('failed','Unable to update yser profile!');                
+                $this->session->set_flashdata('failed','Unable to update your profile!');                
             }
             redirect(base_url('usermain'));
+        }
+        public function print_invoice_user($refno,$type){
+            $page = "print_invoice";
+            if(!file_exists(APPPATH.'views/pages/user/'.$page.".php")){
+                show_404();
+            }
+            // if($this->session->user_login){
+                
+            // }else{
+            //     redirect(base_url('main'));
+            // }
+            $data['details']=$this->Billing_model->getSchoolDetails($this->session->id);
+            $data['invoice'] = $this->Billing_model->getBillingDetails($refno,$type);            
+            $data['invno'] = $refno;
+            // $this->load->view('templates/header');
+            // $this->load->view('templates/navbar');
+            $this->load->view('pages/user/'.$page,$data);
+            // $this->load->view('templates/modal',$data);
+            // $this->load->view('templates/footer');            
+        }
+        public function fetchBillingDetails(){
+            $id=$this->input->post('id');
+            $type=$this->input->post('type');
+            $data=$this->Billing_model->fetchBillingDetails($id,$type);
+            echo json_encode($data);
+        }
+        public function post_payment(){
+            $data=$this->Billing_model->post_payment();
+            if($data){             
+                $this->session->set_flashdata('success','Payment details successfully posted!');                
+            }else{
+                $this->session->set_flashdata('failed','Unable to post payment details!');                
+            }
+            redirect(base_url('usermain'));
+        }
+        public function viewpaymentdetails($refno,$sc_id,$st_id){
+            $page = "payment_details";
+            if(!file_exists(APPPATH.'views/pages/user/'.$page.".php")){
+                show_404();
+            }
+            // if($this->session->user_login){
+                
+            // }else{
+            //     redirect(base_url('main'));
+            // }
+            $data['details']=$this->Billing_model->getSchoolDetails($sc_id);
+            $data['payment'] = $this->Billing_model->fetchPaymentDetails($refno,$sc_id,$st_id);   
+            $data['refno'] = $refno;         
+            // $this->load->view('templates/header');
+            // $this->load->view('templates/navbar');
+            $this->load->view('pages/user/'.$page,$data);
+            // $this->load->view('templates/modal',$data);
+            // $this->load->view('templates/footer');            
         }
         //===================End of User Module================================================
     }

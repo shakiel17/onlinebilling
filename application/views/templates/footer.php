@@ -254,6 +254,50 @@
     document.getElementById('account_hs_unitcost').value=id[2];   
     document.getElementById('account_syear_hs').value=id[3];   
   });
+
+  $('.postPayment').click(function(){
+    var data=$(this).data('id');
+    var id=data.split('_');
+    $.ajax({
+          url:'<?=base_url();?>index.php/pages/fetchBillingDetails',
+          type:'post',
+          data: {
+            id: id[0],
+            type: id[1]
+          },
+          dataType:'json',
+          success: function(response){
+            document.getElementById('pay_refno').value=id[0];
+            document.getElementById('pay_type').value=id[1];
+            document.getElementById('pay_amount').value=response[0]['amount'];
+            document.getElementById('pay_student_id').value=response[0]['student_id'];
+          }
+        });    
+  });  
+  $('.viewPayment').click(function(){
+    var data=$(this).data('id');
+    var id=data.split('_');    
+    var refno=id[0];
+    var sc_id=id[1];
+    var st_id=id[2];    
+    $.ajax({
+          url:'<?=base_url();?>index.php/pages/fetchPaymentDetails',
+          type:'post',
+          data: {
+            id: refno,
+            st_id: st_id,
+            sc_id: sc_id
+          },
+          dataType:'json',
+          success: function(response){            
+            //alert(response.length);
+             document.getElementById('payment_details').innerHTML = "Transaction #:";
+            // for(var i=0; i < response.length; i++){          
+            //   document.getElementById('paymentDetails').innerHTML = "Transaction #: " + response[i]['remarks'];
+            // }
+          }
+        });    
+  });
 </script>
 </body>
 </html>

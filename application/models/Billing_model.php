@@ -571,13 +571,16 @@
             if($result->num_rows()>0){
                 $item=$result->row_array();
                 $userdata=array(
-                    'school_id' => $item['school_id'],
+                    'id' => $item['school_id'],
                     'username' => $item['g_username'],
                     'fullname' => $item['g_name'],
                     'guard_id' => $item['g_id'],
                     'guard_login' => true
                 );
                 $this->session->set_userdata($userdata);
+                $syear=$this->Billing_model->getSchoolYear();
+                $this->session->set_userdata('schoolyear',$syear['schoolyear']);
+                $this->session->set_userdata('semester',$syear['semester']);
                 return true;                
             }else{
                 $this->session->set_flashdata('error','Invalid username and password!');
@@ -595,14 +598,14 @@
         }
         public function getGuardianStudents($id,$school_id,$type){
             if($type=="college"){
-                $result=$this->db->query("SELECT g.*,s.student_lastname,s.student_firstname,s.student_middlename,c.description FROM guardian_details g INNER JOIN student s ON s.student_id=g.student_id AND s.school_id=g.school_id LEFT JOIN course c ON c.id=s.student_course WHERE g.school_id='$school_id' AND g.g_id='$id' AND s.student_type='$type'");
+                $result=$this->db->query("SELECT g.*,s.student_lastname,s.student_firstname,s.student_middlename,c.description,s.student_type FROM guardian_details g INNER JOIN student s ON s.student_id=g.student_id AND s.school_id=g.school_id LEFT JOIN course c ON c.id=s.student_course WHERE g.school_id='$school_id' AND g.g_id='$id' AND s.student_type='$type'");
             }else{
-                $result=$this->db->query("SELECT g.*,s.student_lastname,s.student_firstname,s.student_middlename,c.description FROM guardian_details g INNER JOIN student s ON s.student_id=g.student_id AND s.school_id=g.school_id LEFT JOIN grade c ON c.id=s.student_course WHERE g.school_id='$school_id' AND g.g_id='$id' AND s.student_type='$type'");
+                $result=$this->db->query("SELECT g.*,s.student_lastname,s.student_firstname,s.student_middlename,c.description,s.student_type FROM guardian_details g INNER JOIN student s ON s.student_id=g.student_id AND s.school_id=g.school_id LEFT JOIN grade c ON c.id=s.student_course WHERE g.school_id='$school_id' AND g.g_id='$id' AND s.student_type='$type'");
             }
             return $result->result_array();
         }
         public function getAllStudentBySchool($type){
-            $id=$this->session->school_id;
+            $id=$this->session->id;
             if($type=="college"){
                 $result=$this->db->query("SELECT s.*,c.description,c.amount FROM student s LEFT JOIN course c ON c.id=s.student_course WHERE s.school_id='$id' AND s.student_type='$type' ORDER BY s.student_lastname ASC");
             }else{
@@ -611,7 +614,7 @@
             return $result->result_array();
         }
         public function user_add_student($id){
-            $school_id=$this->session->school_id;
+            $school_id=$this->session->id;
             $guard_id=$this->session->guard_id;
             $date=date('Y-m-d');
             $time=date('H:i:s');
@@ -636,7 +639,7 @@
                 }            
         }
         public function update_user_profile(){
-            $school_id=$this->session->school_id;
+            $school_id=$this->session->id;
             $id=$this->session->guard_id;
             $fullanme=$this->input->post('fullname');
             $email=$this->input->post('email');
@@ -656,6 +659,55 @@
                     return false;
                 }
             }
+        }
+        public function getBillingHistory($school_id,$student_id,$type){
+            if($type=="college"){
+                $result=$this->db->query("SELECT * FROM bill_history_college WHERE school_id='$school_id' AND student_id='$student_id' ORDER BY datearray DESC");
+            }else{
+                $result=$this->db->query("SELECT * FROM bill_history_hs WHERE school_id='$school_id' AND student_id='$student_id' ORDER BY datearray DESC");
+            }            
+            return $result->result_array();
+        }
+        public function fetchBillingDetails($refno,$type){
+            if($type=="college"){
+                $result=$this->db->query("SELECT * FROM bill_history_college WHERE refno='$refno'");                
+            }else{
+                $result=$this->db->query("SELECT * FROM bill_history_hs WHERE refno='$refno'");                
+            }            
+                return $result->result_array();
+        }
+        public function post_payment(){
+            $id=$this->session->id;
+            $refno=$this->input->post('refno');
+            $type=$this->input->post('type');
+            $student_id=$this->input->post('student_id');
+            $amount_due=$this->input->post('amount_due');
+            $amount=$this->input->post('amount');
+            $txno=$this->input->post('txno');
+            $date=date('Y-m-d');
+            $time=date('H:i:s');
+            $fileName=basename($_FILES["file"]["name"]);
+            $fileType=pathinfo($fileName, PATHINFO_EXTENSION);
+            $allowTypes = array('jpg','png','jpeg','gif');
+            if(in_array($fileType,$allowTypes)){
+                $image = $_FILES["file"]["tmp_name"];
+                $imgContent=addslashes(file_get_contents($image));
+                $result=$this->db->query("INSERT INTO payment(refno,school_id,student_id,amount,remarks,payment_proof,datearray,timearray,date_approved,time_approved,approved_by) VALUES('$refno','$id','$student_id','$amount','$txno','$imgContent','$date','$time','','','')");
+            }
+            if($result){
+                return true;
+            }else{
+                return false;
+            }
+        }
+        public function getStudentPayment($refno,$id,$student_id){
+            $result=$this->db->query("SELECT * FROM payment WHERE refno='$refno' AND school_id='$id' AND student_id='$student_id'");
+            return $result->result_array();
+        }
+        public function fetchPaymentDetails($refno,$id,$student_id){
+            $result=$this->db->query("SELECT * FROM payment WHERE refno='$refno' AND school_id='$id' AND student_id='$student_id'");           
+            return $result->result_array();           
+            
         }
         //=============================End of Guardian Model===============================================
     }
