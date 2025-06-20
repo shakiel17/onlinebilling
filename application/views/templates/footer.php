@@ -298,6 +298,11 @@
           }
         });    
   });
+
+  $('.sendInvoice').click(function(){
+    var id=$(this).data('id');    
+    document.getElementById('invoice_id').value=id;
+  });
 </script>
 </body>
 </html>

@@ -363,6 +363,98 @@
             // $this->load->view('templates/modal',$data);
             // $this->load->view('templates/footer');            
         }
+        public function approved_payment($id,$school_id,$student_id,$type){            
+            $upload=$this->Billing_model->approved_payment($id,$school_id,$student_id,$type);            
+            if($upload){
+                $this->session->set_flashdata('success','Payment successfully approved!');
+            }else{
+                $this->session->set_flashdata('failed','Unable to approved payment!');
+            }
+            redirect(base_url('billing_details/'.$school_id."/".$student_id));
+        }
+        public function manage_notification(){
+            $page = "manage_notification";
+            if(!file_exists(APPPATH.'views/pages/'.$page.".php")){
+                show_404();
+            }
+            if($this->session->user_login){
+                
+            }else{
+                redirect(base_url('main'));
+            }
+            $data['details']=$this->Billing_model->getSchoolDetails($this->session->id);  
+            $data['college'] = $this->Billing_model->getStudentAccountByType('college');
+            $data['highschool'] = $this->Billing_model->getAllStudentByType('highschool');
+            $data['student_id'] = '';
+            $this->load->view('templates/header');
+            $this->load->view('templates/navbar');
+            $this->load->view('pages/'.$page,$data);
+            $this->load->view('templates/modal');
+            $this->load->view('templates/footer');            
+        }
+        public function send_invoice(){
+            $student_id=$this->input->post('student_id');
+            $invno=$this->input->post('invno');
+            $file=$_FILES['file']['tmp_name'];
+            $file_name=$_FILES['file']['name'];
+            $guard=$this->Billing_model->getStudentGuardian($student_id,$this->session->id);
+            if($guard){
+                $name=$guard['g_name'];
+                $email=$guard['g_email'];
+            }else{
+                $name="";
+                $email="";
+            }
+
+            $subject="Digital Invoice";
+
+            $message="
+Dear $name, 
+
+We have generated your Statement of Account (SOA).
+For this bill: 
+Account Number: $student_id
+Reference #: $invno.
+
+You may also check your updated balance thru the system.
+
+Please see attached file for your reference.
+
+Thank you.
+            ";
+
+            $config = array(
+                'protocol' => 'smtp',
+                'smtp_host' => 'ssl://smtp.googlemail.com',
+                'smtp_port' => 465,
+                'smtp_user' => 'easykill.aboy@gmail.com',
+                'smtp_pass' => 'tdbhdghkzcegyncj',
+                'mailtype' => 'text',
+                'charset' => 'iso-8859-1',
+                'wordwrap' => TRUE
+            );
+
+            $this->load->library('email',$config);
+            $this->email->set_newline("\r\n");
+            $this->email->from('Online Billing System');
+            $this->email->to($email);
+            $this->email->subject($subject);
+            $this->email->message($message);
+            $this->email->attach($file,'attachment',$file_name);
+
+            if($this->email->send()){
+		            $this->Billing_model->save_notification($invno,$student_id);                
+                 $this->session->set_flashdata('success','Invoice successfully sent!');
+            }else{
+                $this->session->set_flashdata('failed','Unbale to send invoice!');
+            }
+            // if($request){
+            //     $this->session->set_flashdata('success','Request successfully '.$reuqest.'!');
+            // }else{
+            //     $this->session->set_flashdata('failed','Unbale to '.$request.' request!');
+            // }
+            redirect(base_url('manage_notification'));
+        }
         //===================End of School Module================================================
         
 //======================================================================================================================================
@@ -706,7 +798,7 @@ Thank you and God bless.";
             $this->load->view('pages/user/'.$page,$data);
             // $this->load->view('templates/modal',$data);
             // $this->load->view('templates/footer');            
-        }
+        }        
         //===================End of User Module================================================
     }
 ?>

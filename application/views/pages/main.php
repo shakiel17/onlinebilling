@@ -93,7 +93,7 @@
                 <h6 class="card-title">Send Invoice/Reminders</h6>
 
                 <p class="card-text">You can send the digital invoice/ reminders here.</p>
-                <a href="#" class="btn btn-primary"><i class="fas fa-cogs"></i> Manage</a>
+                <a href="<?=base_url('manage_notification');?>" class="btn btn-primary"><i class="fas fa-cogs"></i> Manage</a>
               </div>
             </div>
           </div>

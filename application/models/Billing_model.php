@@ -539,6 +539,81 @@
             $result=$this->db->query("SELECT * FROM gcash WHERE school_id='$id'");
             return $result->row_array();
         }
+        public function approved_payment($refno,$school_id,$student_id,$type){
+            $date=date('Y-m-d');
+            $time=date('H:i:s');
+            $amt_due=0;
+            $amt_pay=0;
+            $rem_bal=0;            
+            $syear=$this->session->schoolyear;
+            $sem=$this->session->semester;
+            $fullname=$this->session->fullname;
+            if($type=="college"){
+                $query=$this->db->query("SELECT * FROM bill_history_college WHERE refno='$refno' AND school_id='$school_id' AND student_id='$student_id'");
+                $item=$query->row_array();
+                $amt_due=$item['amount'];                                
+
+                $balance=$this->db->query("SELECT * FROM student_account_college WHERE school_id='$school_id' AND student_id='$student_id' AND semester='$sem' AND syear='$syear'");
+                $arow=$balance->row_array();
+                $rem_bal=$arow['rem_balance'];
+
+            }else{
+                $query=$this->db->query("SELECT * FROM bill_history_hs WHERE refno='$refno' AND school_id='$school_id' AND student_id='$student_id'");
+                $item=$query->row_array();
+                $amt_due=$item['amount'];
+
+                $balance=$this->db->query("SELECT * FROM student_account_hs WHERE school_id='$school_id' AND student_id='$student_id' AND syear='$syear'");
+                $arow=$balance->row_array();
+                $rem_bal=$arow['rem_balance'];
+            }
+                $payment=$this->db->query("SELECT *,SUM(amount) as amount FROM payment WHERE refno='$refno' AND school_id='$school_id' AND student_id='$student_id' GROUP BY refno");
+                $row=$payment->row_array();
+                $amt_pay=$row['amount'];
+
+                $diff=$amt_due-$amt_pay;
+
+                if($diff > 0){
+                    $remarks="partial payment";
+                }else{
+                    $remarks="full payment";
+                }
+
+                $rembalance=$rem_bal-$amt_pay;
+                if($type=="college"){
+                    $result=$this->db->query("UPDATE bill_history_college SET amount_paid='$amt_pay',remarks='$remarks',`status`='paid' WHERE refno='$refno' AND school_id='$school_id' AND student_id='$student_id'");
+                    $this->db->query("UPDATE student_account_college SET rem_balance='$rembalance' WHERE school_id='$school_id' AND student_id='$student_id' AND semester='$sem' AND syear='$syear'");
+                }else{
+                    $result=$this->db->query("UPDATE bill_history_hs SET amount_paid='$amt_pay',remarks='$remarks',`status`='paid' WHERE refno='$refno' AND school_id='$school_id' AND student_id='$student_id'");
+                    $this->db->query("UPDATE student_account_hs SET rem_balance='$rembalance' WHERE school_id='$school_id' AND student_id='$student_id' AND syear='$syear'");
+                }
+                if($result){
+                    $this->db->query("UPDATE payment SET `status`='approved',date_approved='$date',time_approved='$time',approved_by='$fullname' WHERE refno='$refno' AND school_id='$school_id' AND student_id='$student_id'");
+                    return true;                    
+                }else{
+                    return false;
+                }
+
+        }
+        public function getStudentGuardian($student_id,$school_id){
+            $result=$this->db->query("SELECT g.g_email,g.g_name FROM guardian_details gd INNER JOIN guardian g ON g.g_id=gd.g_id AND g.school_id=gd.school_id WHERE g.school_id='$school_id' AND gd.student_id='$student_id'");
+            if($result->num_rows() > 0){
+                return $result->row_array();
+            }else{
+                return false;
+            }
+        }
+
+        public function save_notification($invno,$student_id){
+            $id=$this->session->id;
+            $date=date('Y-m-d');
+            $time=date('H:i:s');
+            $result=$this->db->query("INSERT INTO `notification`(school_id,invno,student_id,datearray,timearray) VALUES('$id','$invno','$student_id','$date','$time')");
+            if($result){
+                return true;
+            }else{
+                return false;
+            }
+        }
         //=============================End of School Model===============================================
 
 //===================================================================================================================================

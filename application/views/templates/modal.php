@@ -600,3 +600,35 @@
         </div>
         <!-- /.modal-dialog -->
       </div>
+
+      <div class="modal fade" id="SendInvoice">
+        <div class="modal-dialog modal-md">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Send Invoice</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>           
+            <form action="<?=base_url('send_invoice');?>" method="POST" enctype="multipart/form-data"> 
+              <input type="hidden" name="student_id" id="invoice_id">
+            <div class="modal-body">                                
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Invoice #</label>
+                    <input type="text" class="form-control" name="invno" id="account_syear_hs" placeholder="Reference No." required>
+                </div>                
+                <div class="form-group">
+                    <label for="exampleInputEmail1">File to Attached</label>
+                    <input type="file" class="form-control" name="file" id="account_syear_hs" placeholder="Account Name" required>
+                </div>                                          
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+            </form>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>

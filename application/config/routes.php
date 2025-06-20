@@ -49,6 +49,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
+$route['approved_payment/(:any)/(:any)/(:any)/(:any)'] = 'pages/approved_payment/$1/$2/$3/$4';
 $route['viewpaymentdetails/(:any)/(:any)/(:any)'] = 'pages/viewpaymentdetails/$1/$2/$3';
 $route['post_payment'] = 'pages/post_payment';
 $route['print_invoice_user/(:any)/(:any)'] = 'pages/print_invoice_user/$1/$2';
@@ -72,6 +73,8 @@ $route['adminmain'] = 'pages/adminmain';
 $route['admin_authenticate'] = 'pages/admin_authenticate';
 $route['admin'] = 'pages/admin';
 //=========================School Route============================
+$route['send_invoice'] = 'pages/send_invoice';
+$route['manage_notification'] = 'pages/manage_notification';
 $route['view_qrCode/(:any)'] = 'pages/view_qrCode/$1';
 $route['save_gcash'] = 'pages/save_gcash';
 $route['print_invoice/(:any)/(:any)'] = 'pages/print_invoice/$1/$2';

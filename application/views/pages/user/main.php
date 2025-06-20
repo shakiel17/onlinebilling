@@ -9,7 +9,7 @@
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item"><a href="<?=base_url('usermain');?>">Home</a></li>
               <li class="breadcrumb-item active">User Profile</li>
             </ol>
           </div>
@@ -128,6 +128,12 @@
                         }else{
                           $paid="style='display:none;'";
                         }
+                        if($bill['status']=="pending"){
+                          $stat="danger";
+                        }else{
+                          $stat="success";
+                        }
+                        
                      ?>
                     <div class="post">
                       <div class="user-block">
@@ -144,7 +150,7 @@
                         Due Date: <?=date('m/d/Y',strtotime($bill['due_date']));?><br>
                         Amount Due: <?=number_format($bill['amount'],2);?><br>
                         Amount Paid: <?=number_format($amtpaid,2);?><br>
-                        Status: <span class="bg-danger"><?=$bill['status'];?></span>
+                        Status: <span class="bg-<?=$stat;?>"><?=$bill['status'];?></span>
                       </p>
 
                       <p>
@@ -175,6 +181,11 @@
                         foreach($payment as $pay){
                           $amtpaid += $pay['amount'];
                         }
+                        if($bill['status']=="pending"){
+                          $stat="danger";
+                        }else{
+                          $stat="success";
+                        }
                      ?>
                     <div class="post">
                       <div class="user-block">
@@ -190,11 +201,12 @@
                         Due Date: <?=date('m/d/Y',strtotime($bill['due_date']));?><br>
                         Amount Due: <?=number_format($bill['amount'],2);?><br>
                         Amount Paid: <?=number_format($amtpaid,2);?><br>
-                        Status: <span class="bg-danger"><?=$bill['status'];?></span>
+                        Status: <span class="bg-<?=$stat;?>"><?=$bill['status'];?></span>
                       </p>
 
                       <p>
                         <a href="#" class="link-black text-sm mr-2 postPayment" <?=$status;?> data-toggle="modal" data-target="#PostPayment" data-id="<?=$bill['refno'];?>_<?=$item['student_type'];?>"><i class="fas fa-share mr-1"></i> Post Payment</a>
+                        <a href="<?=base_url('viewpaymentdetails/'.$bill['refno']."/".$bill['school_id']."/".$bill['student_id']);?>" class="link-black text-sm" target="_blank"><i class="fas fa-receipt mr-1"></i> View Payment Details</a>
                         <span class="float-right">
                           <a href="<?=base_url('print_invoice_user/'.$bill['refno'].'/'.$item['student_type']);?>" class="link-black text-sm" target="_blank">
                             <i class="far fa-eye"></i> View Invoice

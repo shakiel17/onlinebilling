@@ -72,6 +72,20 @@
                   }else if($bill['status']=="paid"){
                     $badge="success";
                   }
+                  $pay="";
+                  $vpay="";
+                  $payment=$this->Billing_model->getStudentPayment($bill['refno'],$profile['school_id'],$profile['student_id']);
+                  if(count($payment) > 0){
+                    $wp="";
+                    foreach($payment as $row){
+                      $wp=$row['status'];
+                    }
+                    if($wp <> "pending"){
+                      $pay="style='display:none;'";
+                    }
+                  }else{
+                    $vpay="style='display:none;'";
+                  }
                   ?>
                     <div class="post clearfix">
                       <div class="user-block">                        
@@ -89,7 +103,9 @@
                       </p>
 
                       <p>
-                        <a href="<?=base_url('print_invoice/'.$bill['refno'].'/'.$profile['student_type']);?>" class="link-black text-sm" target="_blank"><i class="fas fa-receipt mr-1"></i> Print Invoice</a>
+                        <a href="<?=base_url('print_invoice/'.$bill['refno'].'/'.$profile['student_type']);?>" class="link-black text-sm" target="_blank"><i class="fas fa-receipt mr-1"></i> Print Invoice</a>&nbsp; &nbsp;
+                        <a href="<?=base_url('viewpaymentdetails/'.$bill['refno']."/".$bill['school_id']."/".$bill['student_id']);?>" class="link-black text-sm" target="_blank" <?=$vpay;?>><i class="fas fa-receipt mr-1"></i> View Payment Details</a>
+                        <a href="<?=base_url('approved_payment/'.$bill['refno']."/".$bill['school_id']."/".$bill['student_id']."/".$profile['student_type']);?>" class="btn btn-outline-success btn-xs" onclick="return confirm('Do you wish to approved this payment?');return false;" <?=$pay;?> <?=$vpay;?>><i class="fas fa-thumbs-up"></i> Approve Payment</a>
                       </p>
                     </div>
                     <?php

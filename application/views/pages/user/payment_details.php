@@ -14,6 +14,7 @@
                 <td align="center"><b>Status</b></td>
             </tr>
             <?php
+            $total=0;
             foreach($payment as $item){
                 echo "<tr>";
                     echo "<td align='center'>$item[remarks]</td>";
@@ -25,8 +26,14 @@
                     <?php
                     echo "<td align='center'>$item[status]</td>";
                 echo "</tr>";
+                $total += $item['amount'];
             }
             ?>
+            <tr>
+                <td align="right"><b>TOTAL</b></td>
+                <td align="right"><b><?=number_format($total,2);?></b></td>                
+                <td colspan="2"></td>
+            </tr>
         </table>
     </body>
 </html>
