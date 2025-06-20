@@ -73,6 +73,7 @@ $route['adminmain'] = 'pages/adminmain';
 $route['admin_authenticate'] = 'pages/admin_authenticate';
 $route['admin'] = 'pages/admin';
 //=========================School Route============================
+$route['send_reminder'] = 'pages/send_reminders';
 $route['send_invoice'] = 'pages/send_invoice';
 $route['manage_notification'] = 'pages/manage_notification';
 $route['view_qrCode/(:any)'] = 'pages/view_qrCode/$1';

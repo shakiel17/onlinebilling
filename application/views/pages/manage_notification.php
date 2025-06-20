@@ -78,7 +78,7 @@
                                 ?>
                                 <td align="center">
                                     <a href="#" class="btn btn-primary btn-sm sendInvoice" data-toggle="modal" data-target="#SendInvoice" data-id="<?=$item['student_id'];?>"><i class="fas fa-receipt"></i> Send Invoice</a>
-                                    <a href="#" class="btn btn-warning btn-sm"><i class="fas fa-bell"></i> Send Reminders</a>
+                                    <a href="#" class="btn btn-warning btn-sm sendReminders" data-toggle="modal" data-target="#SendReminders" data-id="<?=$item['student_id'];?>"><i class="fas fa-bell"></i> Send Reminders</a>
                                 </td>
                                 <?php
                             echo "</tr>";
@@ -130,8 +130,8 @@
                                 echo "<td>$item[description]</td>";
                                 ?>
                                 <td align="center">
-                                    <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-receipt"></i> Send Invoice</a>
-                                    <a href="#" class="btn btn-warning btn-sm"><i class="fas fa-bell"></i> Send Reminders</a>
+                                    <a href="#" class="btn btn-primary btn-sm sendInvoice" data-toggle="modal" data-target="#SendInvoice" data-id="<?=$item['student_id'];?>"><i class="fas fa-receipt"></i> Send Invoice</a>
+                                    <a href="#" class="btn btn-warning btn-sm sendReminders" data-toggle="modal" data-target="#SendReminders" data-id="<?=$item['student_id'];?>"><i class="fas fa-bell"></i> Send Reminders</a>
                                 </td>
                                 <?php
                             echo "</tr>";

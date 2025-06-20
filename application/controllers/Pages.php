@@ -455,6 +455,50 @@ Thank you.
             // }
             redirect(base_url('manage_notification'));
         }
+        public function send_reminders(){
+            $student_id=$this->input->post('student_id');          
+            $message=$this->input->post('message');          
+            $guard=$this->Billing_model->getStudentGuardian($student_id,$this->session->id);
+            if($guard){
+                // $name=$guard['g_name'];
+                $email=$guard['g_email'];
+            }else{
+                // $name="";
+                $email="";
+            }
+            $subject="Payment Reminders";
+            $config = array(
+                'protocol' => 'smtp',
+                'smtp_host' => 'ssl://smtp.googlemail.com',
+                'smtp_port' => 465,
+                'smtp_user' => 'easykill.aboy@gmail.com',
+                'smtp_pass' => 'tdbhdghkzcegyncj',
+                'mailtype' => 'text',
+                'charset' => 'iso-8859-1',
+                'wordwrap' => TRUE
+            );
+
+            $this->load->library('email',$config);
+            $this->email->set_newline("\r\n");
+            $this->email->from('Online Billing System');
+            $this->email->to($email);
+            $this->email->subject($subject);
+            $this->email->message($message);
+            // $this->email->attach($file,'attachment',$file_name);
+
+            if($this->email->send()){
+		            // /$this->Billing_model->save_notification($invno,$student_id);                
+                 $this->session->set_flashdata('success','Invoice successfully sent!');
+            }else{
+                $this->session->set_flashdata('failed','Unbale to send invoice!');
+            }
+            // if($request){
+            //     $this->session->set_flashdata('success','Request successfully '.$reuqest.'!');
+            // }else{
+            //     $this->session->set_flashdata('failed','Unbale to '.$request.' request!');
+            // }
+            redirect(base_url('manage_notification'));
+        }
         //===================End of School Module================================================
         
 //======================================================================================================================================
