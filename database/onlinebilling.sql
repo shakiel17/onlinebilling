@@ -47,7 +47,7 @@ CREATE TABLE `bill_history_college` (
   `status` varchar(100) DEFAULT NULL,
   `due_date` date DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Table structure for table `bill_history_hs` */
 
@@ -67,7 +67,7 @@ CREATE TABLE `bill_history_hs` (
   `status` varchar(100) DEFAULT 'pending',
   `due_date` date DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Table structure for table `course` */
 
@@ -155,12 +155,13 @@ DROP TABLE IF EXISTS `notification`;
 
 CREATE TABLE `notification` (
   `id` int(45) NOT NULL AUTO_INCREMENT,
-  `description` text DEFAULT NULL,
+  `school_id` varchar(100) DEFAULT NULL,
+  `invno` varchar(100) DEFAULT NULL,
   `student_id` varchar(100) DEFAULT NULL,
   `datearray` date DEFAULT NULL,
   `timearray` time DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Table structure for table `payment` */
 
@@ -181,7 +182,7 @@ CREATE TABLE `payment` (
   `time_approved` time DEFAULT NULL,
   `approved_by` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Table structure for table `school` */
 
