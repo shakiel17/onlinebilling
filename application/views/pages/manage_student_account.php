@@ -54,7 +54,7 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-12">
-            <div class="card">
+            <div class="card card-primary shadow">
               <div class="card-header">
                 <h5 class="card-title m-0"><i class="fas fa-graduation-cap"></i> Student Account (College)
                 <?php
@@ -68,7 +68,7 @@
                 ?>
               </h5>
                 <div style="float:right;" <?=$generate;?>>
-                    <a href="<?=base_url('generate_list_college');?>" class="btn btn-primary btn-sm" onclick="return confirm('Do you wish to generate list?');return false;"><i class="fas fa-plus"></i> Generate List</a>
+                    <a href="<?=base_url('generate_list_college');?>" class="btn btn-success btn-sm" onclick="return confirm('Do you wish to generate list?');return false;"><i class="fas fa-plus"></i> Generate List</a>
                 </div>
               </div>
               <div class="card-body">
@@ -141,7 +141,7 @@
           </div>
           
           <div class="col-lg-12">
-            <div class="card">
+            <div class="card card-success shadow">
               <div class="card-header">
                 <h5 class="card-title m-0"><i class="fas fa-graduation-cap"></i> Student Account (High School)</h5>
                 <div style="float:right;" <?=$generate;?>>

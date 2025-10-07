@@ -47,7 +47,7 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-6">
-            <div class="card">
+            <div class="card card-primary shadow">
               <div class="card-header">
                 <h5 class="card-title m-0"><i class="fas fa-user"></i> Student Manager</h5>
               </div>
@@ -59,7 +59,7 @@
               </div>
             </div>
 
-            <div class="card card-outline">
+            <div class="card card-success shadow">
               <div class="card-header">
                 <h5 class="card-title m-0"><i class="fas fa-money-bill-alt"></i> Billing Manager</h5>
               </div>
@@ -73,7 +73,7 @@
           </div>
           <!-- /.col-md-6 -->
           <div class="col-lg-6">
-            <div class="card">
+            <div class="card card-info shadow">
               <div class="card-header">
                 <h5 class="card-title m-0"><i class="fas fa-file-alt"></i> Account Manager</h5>
               </div>
@@ -85,7 +85,7 @@
               </div>
             </div>
 
-            <div class="card  card-outline">
+            <div class="card  card-warning shadow">
               <div class="card-header">
                 <h5 class="card-title m-0"><i class="fas fa-mail-bulk"></i> Email Notification Manager</h5>
               </div>

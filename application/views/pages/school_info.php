@@ -47,7 +47,7 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-12">
-            <div class="card">
+            <div class="card card-primary shadow">
               <div class="card-header">
                 <h5 class="card-title m-0"><i class="fas fa-building"></i> School Information Manager</h5>
               </div>

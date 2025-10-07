@@ -47,11 +47,11 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-12">
-            <div class="card">
+            <div class="card card-primary shadow">
               <div class="card-header">
                 <h5 class="card-title m-0"><i class="fas fa-building"></i> Student List (College)</h5>
                 <div style="float:right;">
-                    <a href="#" class="btn btn-primary btn-sm addStudentCollege" data-toggle="modal" data-target="#ManageStudentCollege"><i class="fas fa-plus"></i> Add New</a>
+                    <a href="#" class="btn btn-success btn-sm addStudentCollege" data-toggle="modal" data-target="#ManageStudentCollege"><i class="fas fa-plus"></i> Add New</a>
                 </div>
               </div>
               <div class="card-body">
@@ -99,7 +99,7 @@
           </div>
           
           <div class="col-lg-12">
-            <div class="card">
+            <div class="card card-success shadow">
               <div class="card-header">
                 <h5 class="card-title m-0"><i class="fas fa-building"></i> Student List (High School)</h5>
                 <div style="float:right;">

@@ -47,7 +47,7 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-12">
-            <div class="card">
+            <div class="card card-primary shadow">
               <div class="card-header">
                 <h5 class="card-title m-0"><i class="fas fa-building"></i> Student List (College)</h5>
                 <!-- <div style="float:right;">
@@ -100,7 +100,7 @@
           </div>
           
           <div class="col-lg-12">
-            <div class="card">
+            <div class="card card-success shadow">
               <div class="card-header">
                 <h5 class="card-title m-0"><i class="fas fa-building"></i> Student List (High School)</h5>
                 <!-- <div style="float:right;">

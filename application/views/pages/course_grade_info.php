@@ -47,11 +47,11 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-12">
-            <div class="card">
+            <div class="card card-primary shadow">
               <div class="card-header">
                 <h5 class="card-title m-0"><i class="fas fa-graduation-cap"></i> Course Information Manager (College)</h5>
                 <div style="float:right;">
-                    <a href="" class="btn btn-primary btn-sm addCourse" data-toggle="modal" data-target="#ManageCourse"><i class="fas fa-plus"></i> Add New</a>
+                    <a href="" class="btn btn-success btn-sm addCourse" data-toggle="modal" data-target="#ManageCourse"><i class="fas fa-plus"></i> Add New</a>
                 </div>
               </div>
               <div class="card-body table-responsive">
@@ -102,7 +102,7 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-12">
-            <div class="card">
+            <div class="card card-success shadow">
               <div class="card-header">
                 <h5 class="card-title m-0"><i class="fas fa-graduation-cap"></i> Grade Information Manager (High School)</h5>
                 <div style="float:right;">
