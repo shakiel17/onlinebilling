@@ -15,10 +15,12 @@
   <!-- Theme style -->
   <link rel="stylesheet" href="<?=base_url('design/assets/dist/css/adminlte.min.css');?>">
 </head>
-<body class="hold-transition login-page">
+<body class="hold-transition login-page" style="background:url(<?=base_url('design/assets/dist/img/onlinebilling.jpg');?>) no-repeat; background-size:cover;">
 <div class="login-box">
-  <div class="login-logo">
-    <a href="<?=base_url('user');?>"><b>Online Billing System</b></a>
+  <div class="card card-outline card-primary">
+    <div class="card-header text-center">
+    <a href="<?=base_url('user');?>"><b class="h2">Online Billing System</b></a>
+    </div>
   </div>
   <!-- /.login-logo -->
   <div class="card">
