@@ -29,8 +29,8 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div class="modal-body table-responsive">
-                <table class="table" id="example3">
+            <div class="modal-body">
+                <table class="table table-bordered" id="example12">
                     <thead>
                     <tr>
                         <th>ID</th>
