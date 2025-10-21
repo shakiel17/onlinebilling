@@ -136,8 +136,12 @@
                     <input type="text" class="form-control" name="description" id="course_name" placeholder="Description">
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Price/Unit</label>
-                    <input type="text" class="form-control" name="unitcost" id="course_amount" placeholder="Price per Unit">
+                    <label for="exampleInputEmail1">Price/Unit Lab</label>
+                    <input type="text" class="form-control" name="unitcost_lab" id="course_amount_lab" placeholder="Price per Unit">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Price/Unit Lec</label>
+                    <input type="text" class="form-control" name="unitcost_lec" id="course_amount_lec" placeholder="Price per Unit">
                 </div>                
             </div>
             <div class="modal-footer justify-content-between">
@@ -386,12 +390,17 @@
             <form action="<?=base_url('save_student_account');?>" method="POST">                     
                 <input type="hidden" name="student_id" id="account_college_id">
                 <input type="hidden" name="course" id="account_course">
-                <input type="hidden" name="unitcost" id="account_college_unitcost">
+                <input type="hidden" name="unitcost_lec" id="account_college_unitcost_lec">
+                <input type="hidden" name="unitcost_lab" id="account_college_unitcost_lab">
                 <input type="hidden" name="type" value="college">
             <div class="modal-body">                
                 <div class="form-group">
-                    <label for="exampleInputEmail1">No. of Units</label>
-                    <input type="number" class="form-control" name="units" id="account_units" required>
+                    <label for="exampleInputEmail1">No. of Units (Lec)</label>
+                    <input type="number" class="form-control" name="units_lec" id="account_units_lec" required>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">No. of Units (Lab)</label>
+                    <input type="number" class="form-control" name="units_lab" id="account_units_lab" required>
                 </div>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Semester</label>

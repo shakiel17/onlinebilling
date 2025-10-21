@@ -1,3 +1,4 @@
+ 
 <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -57,7 +58,7 @@
                   </li>                  
                 </ul>
 
-                <a href="#" class="btn btn-primary btn-block" data-toggle="modal" data-target="#AddStudent"><b>Add Students</b></a>
+                <a href="#" class="btn btn-primary btn-block" onclick="searchStudent()"><b>Add Students</b></a>
               </div>
               <!-- /.card-body -->
             </div>
@@ -319,3 +320,8 @@
     </section>
     <!-- /.content -->
   </div>
+  <script>
+    function searchStudent(){
+						    window.open('<?=base_url();?>searchStudent', '_blank', 'toolbar=yes,scrollbars=yes,resizable=yes,top=100,left=600,width=500,height=500');
+						  }
+  </script>

@@ -60,7 +60,8 @@
                             <tr>
                                 <th>#</th>
                                 <th>Course</th>
-                                <th>Price per Unit</th>
+                                <th>Price per Unit (Lab)</th>
+                                <th>Price per Unit (Lec)</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -71,10 +72,11 @@
                                 echo "<tr>";
                                     echo "<td>$x.</td>";
                                     echo "<td>$course[description]</td>";
-                                    echo "<td align='right'>".number_format($course['amount'],2)."</td>";
+                                    echo "<td align='right'>".number_format($course['amount_lab'],2)."</td>";
+                                    echo "<td align='right'>".number_format($course['amount_lec'],2)."</td>";
                                     ?>
                                     <td>
-                                        <a href="#" class="btn btn-info btn-sm editCourse" data-toggle="modal" data-target="#ManageCourse" data-id="<?=$course['id'];?>_<?=$course['description'];?>_<?=$course['amount'];?>"><i class="fas fa-edit"></i> Edit</a>
+                                        <a href="#" class="btn btn-info btn-sm editCourse" data-toggle="modal" data-target="#ManageCourse" data-id="<?=$course['id'];?>_<?=$course['description'];?>_<?=$course['amount_lab'];?>_<?=$course['amount_lec'];?>"><i class="fas fa-edit"></i> Edit</a>
                                     </td>
                                     <?php
                                 echo "</tr>";
@@ -86,7 +88,8 @@
                             <tr>
                                 <th>#</th>
                                 <th>Course</th>
-                                <th>Price per Unit</th>
+                                <th>Price per Unit (Lab)</th>
+                                <th>Price per Unit (Lec)</th>
                                 <th>Action</th>
                             </tr>
                         </tfoot>

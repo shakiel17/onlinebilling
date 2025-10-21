@@ -241,11 +241,12 @@
             $school_id=$this->session->id;
             $course_id=$this->input->post('course_id');
             $description=$this->input->post('description');
-            $amount=$this->input->post('unitcost');
+            $amountlab=$this->input->post('unitcost_lab');
+            $amountlec=$this->input->post('unitcost_lec');
             if($course_id==""){
-                $result=$this->db->query("INSERT INTO course(school_id,`description`,amount) VALUES('$school_id','$description','$amount')");
+                $result=$this->db->query("INSERT INTO course(school_id,`description`,amount_lab,amount_lec) VALUES('$school_id','$description','$amountlab','$amountlec')");
             }else{
-                $result=$this->db->query("UPDATE course SET `description`='$description',amount='$amount' WHERE id='$course_id'");
+                $result=$this->db->query("UPDATE course SET `description`='$description',amount_lab='$amountlab',amount_lec='$amountlec' WHERE id='$course_id'");
             }
             if($result){
                 return true;
@@ -272,19 +273,40 @@
         public function getAllStudentByType($type){
             $id=$this->session->id;
             if($type=="college"){
-                $result=$this->db->query("SELECT s.*,c.description,c.amount FROM student s LEFT JOIN course c ON c.id=s.student_course WHERE s.school_id='$id' AND s.student_type='$type' ORDER BY s.student_lastname ASC");
+                $result=$this->db->query("SELECT s.*,c.description,c.amount_lab,c.amount_lec FROM student s LEFT JOIN course c ON c.id=s.student_course WHERE s.school_id='$id' AND s.student_type='$type' ORDER BY s.student_lastname ASC");
             }else{
                 $result=$this->db->query("SELECT s.*,c.description,c.amount FROM student s LEFT JOIN grade c ON c.id=s.student_course WHERE s.school_id='$id' AND s.student_type='$type' ORDER BY s.student_lastname ASC");
             }
             return $result->result_array();
         }
+        public function getAllStudentByCourse($course){
+            $id=$this->session->id;            
+                $result=$this->db->query("SELECT s.*,c.description,c.amount_lab,c.amount_lec FROM student s LEFT JOIN course c ON c.id=s.student_course WHERE s.school_id='$id' AND s.student_course='$course' ORDER BY s.student_lastname ASC");            
+            return $result->result_array();
+        }
+        public function getAllStudentByGrade($grade){
+            $id=$this->session->id;        
+                $result=$this->db->query("SELECT s.*,c.description,c.amount FROM student s LEFT JOIN grade c ON c.id=s.student_course WHERE s.school_id='$id' AND s.student_course='$grade' ORDER BY s.student_lastname ASC");        
+            return $result->result_array();
+        }
         public function getStudentAccountByType($type){
             $id=$this->session->id;            
             if($type=="college"){
-                $result=$this->db->query("SELECT s.*,c.description,c.amount,sac.unitcost,sac.units,sac.semester,sac.syear FROM student s LEFT JOIN course c ON c.id=s.student_course LEFT JOIN student_account_college sac ON sac.student_id=s.student_id AND sac.school_id=s.school_id WHERE s.school_id='$id' AND s.student_type='$type' AND c.school_id='$id' ORDER BY s.student_lastname ASC,s.student_firstname ASC");
+                $result=$this->db->query("SELECT s.*,c.description,c.amount_lab,c.amount_lec,sac.unitcost_lab,sac.units_lab,sac.unitcost_lec,sac.units_lec,sac.semester,sac.syear FROM student s LEFT JOIN course c ON c.id=s.student_course LEFT JOIN student_account_college sac ON sac.student_id=s.student_id AND sac.school_id=s.school_id WHERE s.school_id='$id' AND s.student_type='$type' AND c.school_id='$id' ORDER BY s.student_lastname ASC,s.student_firstname ASC");
             }else{
                 $result=$this->db->query("SELECT s.*,c.description,c.amount,sah.description as grade,sah.amount as unitcost,sah.grade_level,sah.syear FROM student s LEFT JOIN grade c ON c.id=s.student_course LEFT JOIN student_account_hs sah ON sah.student_id=s.student_id WHERE s.school_id='$id' AND s.student_type='$type' ORDER BY s.student_lastname ASC,s.student_firstname ASC");
             }
+            return $result->result_array();
+        }
+        public function getStudentAccountByCourse($course){
+            $id=$this->session->id;            
+           
+            $result=$this->db->query("SELECT s.*,c.description,c.amount_lab,c.amount_lec,sac.unitcost_lab,sac.units_lab,sac.unitcost_lec,sac.units_lec,sac.semester,sac.syear FROM student s LEFT JOIN course c ON c.id=s.student_course LEFT JOIN student_account_college sac ON sac.student_id=s.student_id AND sac.school_id=s.school_id WHERE s.school_id='$id' AND s.student_course='$course' AND c.school_id='$id' ORDER BY s.student_lastname ASC,s.student_firstname ASC");           
+            return $result->result_array();
+        }
+        public function getStudentAccountByGrade($grade){
+            $id=$this->session->id;           
+            $result=$this->db->query("SELECT s.*,c.description,c.amount,sah.description as grade,sah.amount as unitcost,sah.grade_level,sah.syear FROM student s LEFT JOIN grade c ON c.id=s.student_course LEFT JOIN student_account_hs sah ON sah.student_id=s.student_id WHERE s.school_id='$id' AND s.student_course='$grade' ORDER BY s.student_lastname ASC,s.student_firstname ASC");           
             return $result->result_array();
         }
         public function save_student(){
@@ -322,6 +344,11 @@
             $result=$this->db->query("SELECT * FROM student WHERE id='$id'");
             return $result->result_array();
         }
+        public function fetch_student_details_name($desc){
+            $school_id=$this->session->id;
+            $result=$this->db->query("SELECT * FROM student WHERE school_id='$school_id' AND (student_id='$desc' OR student_lastname LIKE '%$desc%' OR student_firstname LIKE '%$desc%')");
+            return $result->result_array();
+        }
         public function save_exam_frequency(){
             $id=$this->session->id;
             $frequency=$this->input->post('frequency');
@@ -350,20 +377,22 @@
             $school_id=$this->session->id;
             $student_id=$this->input->post('student_id');
             $course=$this->input->post('course');
-            $unitcost=$this->input->post('unitcost');
+            $unitcost_lec=$this->input->post('unitcost_lec');
+            $unitcost_lab=$this->input->post('unitcost_lab');
             $type=$this->input->post('type');
-            $units=$this->input->post('units');
+            $units_lec=$this->input->post('units_lec');
+            $units_lab=$this->input->post('units_lab');
             $semester=$this->input->post('semester');
             $syear=$this->input->post('syear');
-            $rem=$unitcost*$units;
+            $rem=($unitcost_lec*$units_lec) + ($unitcost_lab*$units_lab);
             $date=date('Y-m-d');
             $time=date('H:i:s');
             if($type=="college"){
                 $check=$this->db->query("SELECT * FROM student_account_college WHERE school_id='$school_id' AND student_id='$student_id' AND course='$course' AND semester='$semester' AND syear='$syear'");
                 if($check->num_rows() > 0){
-                    $result=$this->db->query("UPDATE student_account_college SET units='$units',rem_balance='$rem' WHERE school_id='$school_id' AND student_id='$student_id' AND course='$course' AND semester='$semester' AND syear='$syear'");
+                    $result=$this->db->query("UPDATE student_account_college SET units_lec='$units_lec',units_lab='$units_lab',rem_balance='$rem' WHERE school_id='$school_id' AND student_id='$student_id' AND course='$course' AND semester='$semester' AND syear='$syear'");
                 }else{
-                    $result=$this->db->query("INSERT INTO student_account_college(school_id,student_id,course,unitcost,units,semester,syear,datearray,timearray,rem_balance) VALUES('$school_id','$student_id','$course','$unitcost','$units','$semester','$syear','$date','$time','$rem')");
+                    $result=$this->db->query("INSERT INTO student_account_college(school_id,student_id,course,unitcost_lec,unitcost_lab,units_lec,units_lab,semester,syear,datearray,timearray,rem_balance) VALUES('$school_id','$student_id','$course','$unitcost_lec','$unitcost_lab','$units_lec','$units_lab','$semester','$syear','$date','$time','$rem')");
                 }
             }else{
                 $check=$this->db->query("SELECT * FROM student_account_hs WHERE school_id='$school_id' AND student_id='$student_id' AND `description`='$course' AND syear='$syear'");
@@ -458,7 +487,7 @@
             if($query->num_rows()>0){
                 $row=$query->row_array();
                 if($row['student_type']=="college"){
-                    $result=$this->db->query("SELECT s.*,sc.unitcost,sc.units,sc.semester,sc.syear,sc.rem_balance,c.description FROM student s LEFT JOIN student_account_college sc ON sc.student_id=s.student_id AND sc.school_id=s.school_id LEFT JOIN course c ON c.id=s.student_course WHERE s.school_id='$school_id' AND s.student_id='$student_id' AND semester='$sem'");
+                    $result=$this->db->query("SELECT s.*,sc.unitcost_lec,sc.units_lec,sc.unitcost_lab,sc.units_lab,sc.semester,sc.syear,sc.rem_balance,c.description FROM student s LEFT JOIN student_account_college sc ON sc.student_id=s.student_id AND sc.school_id=s.school_id LEFT JOIN course c ON c.id=s.student_course WHERE s.school_id='$school_id' AND s.student_id='$student_id' AND semester='$sem'");
                 }else{
                     $result=$this->db->query("SELECT s.*,sc.amount as unitcost,sc.grade_level as semester,sc.syear,sc.rem_balance,g.description FROM student s LEFT JOIN student_account_hs sc ON sc.student_id=s.student_id AND sc.school_id=s.school_id LEFT JOIN grade g ON g.id=s.student_course WHERE s.school_id='$school_id' AND s.student_id='$student_id'");                    
                 }
@@ -682,7 +711,7 @@
         public function getAllStudentBySchool($type){
             $id=$this->session->id;
             if($type=="college"){
-                $result=$this->db->query("SELECT s.*,c.description,c.amount FROM student s LEFT JOIN course c ON c.id=s.student_course WHERE s.school_id='$id' AND s.student_type='$type' ORDER BY s.student_lastname ASC");
+                $result=$this->db->query("SELECT s.*,c.description,c.amount_lec,c.amount_lab FROM student s LEFT JOIN course c ON c.id=s.student_course WHERE s.school_id='$id' AND s.student_type='$type' ORDER BY s.student_lastname ASC");
             }else{
                 $result=$this->db->query("SELECT s.*,c.description,c.amount FROM student s LEFT JOIN grade c ON c.id=s.student_course WHERE s.school_id='$id' AND s.student_type='$type' ORDER BY s.student_lastname ASC");
             }

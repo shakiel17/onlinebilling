@@ -143,7 +143,8 @@
     var id=data.split('_');
     document.getElementById('course_id').value=id[0];
     document.getElementById('course_name').value=id[1];
-    document.getElementById('course_amount').value=id[2];
+    document.getElementById('course_amount_lab').value=id[2];
+    document.getElementById('course_amount_lec').value=id[3];
   });
 
   $('.addGrade').click(function(){
@@ -236,15 +237,53 @@
         });    
   });
 
+    // $(document).ready(function () {
+    //     $("#submit").on('click',function (event) {
+    //         event.preventDefault(); // Prevent default form submission 
+    //         var desc=document.getElementById("studentDesc").val();              
+    //         $.ajax({
+    //           url:'<?=base_url();?>index.php/pages/fetchStudentDetailsByName',
+    //           type:'post',
+    //           data: {desc:desc},
+    //           dataType:'json',
+    //           success: function(response){           
+    //             // alert('clicked!');
+    //             // for(var i=0; i < response.length; i++){
+    //             //   document.getElementById('studentDetails').innerHTML = response[i]['student_lastname'];
+    //             // }
+    //             console.log(response);
+    //           },error: function(xhr, resp, text) {
+    //                 console.log(response);
+    //             }
+    //         });
+    //     });
+    // });
+// $('.studentDesc').change(function(){
+//     var id = $(this).val();    
+//     $.ajax({
+//           url:'<?=base_url();?>index.php/pages/fetchStudentDetailsByName',
+//           type:'post',
+//           data: {id: id},
+//           dataType:'json',
+//           success: function(response){
+//             document.getElementById('viewstudentDetails').innerHTML="Student ID: " + response[0]['student_id'] + "<br>Name: " + response[0]['student_lastname'] + ", " + response[0]['student_firstname'] + " " + response[0]['student_middlename'] + 
+//             "<br> Address: " + response[0]['student_address'] + "<br>Gender: " + response[0]['student_gender'] + "<br> Birthdate: " + response[0]['student_birthdate'];            
+//           }
+//         });    
+//   });
+
+
   $('.editAccountCollege').click(function(){
     var data=$(this).data('id');
     var id=data.split('_');
     document.getElementById('account_college_id').value=id[0];
     document.getElementById('account_course').value=id[1];
-    document.getElementById('account_college_unitcost').value=id[2];
-    document.getElementById('account_units').value=id[3];
+    document.getElementById('account_college_unitcost_lec').value=id[2];
+    document.getElementById('account_units_lec').value=id[3];
     document.getElementById('account_semester').value=id[4];
     document.getElementById('account_syear').value=id[5];
+    document.getElementById('account_college_unitcost_lab').value=id[6];
+    document.getElementById('account_units_lab').value=id[7];
   });
   $('.editAccountHigh').click(function(){
     var data=$(this).data('id');

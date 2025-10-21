@@ -187,6 +187,46 @@
             $this->load->view('templates/modal');
             $this->load->view('templates/footer');            
         }
+        public function search_student_course($id){
+            $page = "manage_student";
+            if(!file_exists(APPPATH.'views/pages/'.$page.".php")){
+                show_404();
+            }
+            if($this->session->user_login){
+                
+            }else{
+                redirect(base_url('main'));
+            }
+            $data['details']=$this->Billing_model->getSchoolDetails($this->session->id);  
+            $data['college'] = $this->Billing_model->getAllStudentByCourse($id);
+            $data['highschool'] = $this->Billing_model->getAllStudentByType('highschool');
+            $data['student_id'] = '';
+            $this->load->view('templates/header');
+            $this->load->view('templates/navbar');
+            $this->load->view('pages/'.$page,$data);
+            $this->load->view('templates/modal');
+            $this->load->view('templates/footer');            
+        }
+        public function search_student_grade($id){
+            $page = "manage_student";
+            if(!file_exists(APPPATH.'views/pages/'.$page.".php")){
+                show_404();
+            }
+            if($this->session->user_login){
+                
+            }else{
+                redirect(base_url('main'));
+            }
+            $data['details']=$this->Billing_model->getSchoolDetails($this->session->id);  
+            $data['college'] = $this->Billing_model->getAllStudentByType('college');
+            $data['highschool'] = $this->Billing_model->getAllStudentByGrade($id);
+            $data['student_id'] = '';
+            $this->load->view('templates/header');
+            $this->load->view('templates/navbar');
+            $this->load->view('pages/'.$page,$data);
+            $this->load->view('templates/modal');
+            $this->load->view('templates/footer');            
+        }
         public function save_student(){
             $upload=$this->Billing_model->save_student();            
             if($upload){
@@ -198,8 +238,21 @@
         }
         public function fetchStudentDetails(){
             $id=$this->input->post('id');
-            $data=$this->Billing_model->fetch_student_details($id);
+            $data=$this->Billing_model->fetch_student_details($id);            
             echo json_encode($data);
+        }
+        public function searchStudent(){
+            $page="searchStudent";   
+            $data['student'] = array();         
+            $this->load->view('pages/user/'.$page,$data);
+            
+        }
+        public function searchStudentResult(){
+            $page="searchStudent";         
+            $desc=$this->input->post('description');
+            $data['student'] = $this->Billing_model->fetch_student_details_name($desc);
+            $this->load->view('pages/user/'.$page,$data);
+            
         }
         public function save_exam_frequency(){
             $upload=$this->Billing_model->save_exam_frequency();            
@@ -223,6 +276,47 @@
             $data['details']=$this->Billing_model->getSchoolDetails($this->session->id);  
             $data['college'] = $this->Billing_model->getStudentAccountByType('college');
             $data['highschool'] = $this->Billing_model->getStudentAccountByType('highschool');
+            $data['student_id'] = '';
+            $this->load->view('templates/header');
+            $this->load->view('templates/navbar');
+            $this->load->view('pages/'.$page,$data);
+            $this->load->view('templates/modal');
+            $this->load->view('templates/footer');            
+        }
+        public function search_account_course($id){
+            $page = "manage_student_account";
+            if(!file_exists(APPPATH.'views/pages/'.$page.".php")){
+                show_404();
+            }
+            if($this->session->user_login){
+                
+            }else{
+                redirect(base_url('main'));
+            }
+            $data['details']=$this->Billing_model->getSchoolDetails($this->session->id);  
+            $data['college'] = $this->Billing_model->getStudentAccountByCourse($id);
+            $data['highschool'] = $this->Billing_model->getStudentAccountByType('highschool');
+            $data['student_id'] = '';
+            $this->load->view('templates/header');
+            $this->load->view('templates/navbar');
+            $this->load->view('pages/'.$page,$data);
+            $this->load->view('templates/modal');
+            $this->load->view('templates/footer');            
+        }
+
+        public function search_account_grade($id){
+            $page = "manage_student_account";
+            if(!file_exists(APPPATH.'views/pages/'.$page.".php")){
+                show_404();
+            }
+            if($this->session->user_login){
+                
+            }else{
+                redirect(base_url('main'));
+            }
+            $data['details']=$this->Billing_model->getSchoolDetails($this->session->id);  
+            $data['college'] = $this->Billing_model->getStudentAccountByType('college');
+            $data['highschool'] = $this->Billing_model->getStudentAccountByGrade($id);
             $data['student_id'] = '';
             $this->load->view('templates/header');
             $this->load->view('templates/navbar');
@@ -280,6 +374,46 @@
             $data['details']=$this->Billing_model->getSchoolDetails($this->session->id);  
             $data['college'] = $this->Billing_model->getStudentAccountByType('college');
             $data['highschool'] = $this->Billing_model->getAllStudentByType('highschool');
+            $data['student_id'] = '';
+            $this->load->view('templates/header');
+            $this->load->view('templates/navbar');
+            $this->load->view('pages/'.$page,$data);
+            $this->load->view('templates/modal');
+            $this->load->view('templates/footer');            
+        }
+        public function search_billing_course($id){
+            $page = "manage_billing";
+            if(!file_exists(APPPATH.'views/pages/'.$page.".php")){
+                show_404();
+            }
+            if($this->session->user_login){
+                
+            }else{
+                redirect(base_url('main'));
+            }
+            $data['details']=$this->Billing_model->getSchoolDetails($this->session->id);  
+            $data['college'] = $this->Billing_model->getStudentAccountByCourse($id);
+            $data['highschool'] = $this->Billing_model->getAllStudentByType('highschool');
+            $data['student_id'] = '';
+            $this->load->view('templates/header');
+            $this->load->view('templates/navbar');
+            $this->load->view('pages/'.$page,$data);
+            $this->load->view('templates/modal');
+            $this->load->view('templates/footer');            
+        }
+        public function search_billing_grade($id){
+            $page = "manage_billing";
+            if(!file_exists(APPPATH.'views/pages/'.$page.".php")){
+                show_404();
+            }
+            if($this->session->user_login){
+                
+            }else{
+                redirect(base_url('main'));
+            }
+            $data['details']=$this->Billing_model->getSchoolDetails($this->session->id);  
+            $data['college'] = $this->Billing_model->getStudentAccountByType('college');
+            $data['highschool'] = $this->Billing_model->getAllStudentByGrade($id);
             $data['student_id'] = '';
             $this->load->view('templates/header');
             $this->load->view('templates/navbar');
@@ -385,6 +519,46 @@
             $data['details']=$this->Billing_model->getSchoolDetails($this->session->id);  
             $data['college'] = $this->Billing_model->getStudentAccountByType('college');
             $data['highschool'] = $this->Billing_model->getAllStudentByType('highschool');
+            $data['student_id'] = '';
+            $this->load->view('templates/header');
+            $this->load->view('templates/navbar');
+            $this->load->view('pages/'.$page,$data);
+            $this->load->view('templates/modal');
+            $this->load->view('templates/footer');            
+        }
+        public function search_notify_course($id){
+            $page = "manage_notification";
+            if(!file_exists(APPPATH.'views/pages/'.$page.".php")){
+                show_404();
+            }
+            if($this->session->user_login){
+                
+            }else{
+                redirect(base_url('main'));
+            }
+            $data['details']=$this->Billing_model->getSchoolDetails($this->session->id);  
+            $data['college'] = $this->Billing_model->getStudentAccountByCourse($id);
+            $data['highschool'] = $this->Billing_model->getAllStudentByType('highschool');
+            $data['student_id'] = '';
+            $this->load->view('templates/header');
+            $this->load->view('templates/navbar');
+            $this->load->view('pages/'.$page,$data);
+            $this->load->view('templates/modal');
+            $this->load->view('templates/footer');            
+        }
+        public function search_notify_grade($id){
+            $page = "manage_notification";
+            if(!file_exists(APPPATH.'views/pages/'.$page.".php")){
+                show_404();
+            }
+            if($this->session->user_login){
+                
+            }else{
+                redirect(base_url('main'));
+            }
+            $data['details']=$this->Billing_model->getSchoolDetails($this->session->id);  
+            $data['college'] = $this->Billing_model->getStudentAccountByType('college');
+            $data['highschool'] = $this->Billing_model->getAllStudentByGrade($id);
             $data['student_id'] = '';
             $this->load->view('templates/header');
             $this->load->view('templates/navbar');
@@ -765,12 +939,15 @@ Thank you and God bless.";
         }
         public function user_add_student($id){            
             $data=$this->Billing_model->user_add_student($id);
+            echo "<script>";
             if($data){             
-                $this->session->set_flashdata('success','Student details successfully added!');                
+                echo "alert('Student details successfully added!');";                
             }else{
-                $this->session->set_flashdata('failed','Unable to add student details!');                
+                echo "alert('Unable to add student details!');";                
             }
-            redirect(base_url('usermain'));
+            echo "window.close();";
+            echo "</script>";
+            //redirect(base_url('usermain'));
         }
         public function user_delete_student($id){            
             $data=$this->Billing_model->user_delete_student($id);

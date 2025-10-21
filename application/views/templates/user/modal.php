@@ -21,7 +21,7 @@
       </div>
 
       <div class="modal fade" id="AddStudent">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-md">
           <div class="modal-content">
             <div class="modal-header">
               <h4 class="modal-title">Add Student</h4>
@@ -30,7 +30,20 @@
               </button>
             </div>
             <div class="modal-body">
-                <table class="table table-bordered" id="example12">
+              <form id="form" action="" method="POST">
+              <table width="100%" border="0">
+                <tr>
+                  <td width="90%">                                          
+                    <input type="text" name="searchme" class="form-control" onKeyUp="showResult();" id="searchme" placeholder="Search student by ID or lastname">
+                  </td>
+                  <td width="10%">
+                    <input type="button" name="submit" id="submit" value="Search" class="btn btn-primary submit" style="width:100px;">                                          
+                  </td>
+                </tr>
+              </table>
+              </form>
+              <b>Search Result:</b>              
+                <!-- <table class="table table-bordered" id="example12">
                     <thead>
                     <tr>
                         <th>ID</th>
@@ -40,32 +53,32 @@
                     </tr>
                 </thead>
                 <tbody>
-              <?php
-                $students=$this->Billing_model->getAllStudentBySchool('college');
-                foreach($students as $item){
-                    echo "<tr>";
-                        echo "<td>$item[student_id]</td>";
-                        echo "<td>$item[student_lastname], $item[student_firstname] $item[student_middlename]</td>";
-                        echo "<td>$item[description]</td>";
-                        ?>
-                        <td><a href="<?=base_url('user_add_student/'.$item['student_id']);?>" class='btn btn-success btn-sm' onclick="return confirm('Do you wish to add this student?');return false;">Add</a></td>
-                        <?php
-                    echo "</tr>";
-                }
-                $students=$this->Billing_model->getAllStudentBySchool('highschool');
-                foreach($students as $item){
-                    echo "<tr>";
-                        echo "<td>$item[student_id]</td>";
-                        echo "<td>$item[student_lastname], $item[student_firstname] $item[student_middlename]</td>";
-                        echo "<td>$item[description]</td>";
-                        ?>
-                        <td><a href="<?=base_url('user_add_student/'.$item['student_id']);?>" class='btn btn-success btn-sm' onclick="return confirm('Do you wish to add this student?');return false;">Add</a></td>
-                        <?php
-                    echo "</tr>";
-                }
-              ?>
-              </tbody>
-              </table>
+                  <?php
+                    // $students=$this->Billing_model->getAllStudentBySchool('college');
+                    // foreach($students as $item){
+                    //     echo "<tr>";
+                    //         echo "<td>$item[student_id]</td>";
+                    //         echo "<td>$item[student_lastname], $item[student_firstname] $item[student_middlename]</td>";
+                    //         echo "<td>$item[description]</td>";
+                    //         ?>
+                    //         <td><a href="<?=base_url('user_add_student/'.$item['student_id']);?>" class='btn btn-success btn-sm' onclick="return confirm('Do you wish to add this student?');return false;">Add</a></td>
+                    //         <?php
+                    //     echo "</tr>";
+                    // }
+                    // $students=$this->Billing_model->getAllStudentBySchool('highschool');
+                    // foreach($students as $item){
+                    //     echo "<tr>";
+                    //         echo "<td>$item[student_id]</td>";
+                    //         echo "<td>$item[student_lastname], $item[student_firstname] $item[student_middlename]</td>";
+                    //         echo "<td>$item[description]</td>";
+                    //         ?>
+                    //         <td><a href="<?=base_url('user_add_student/'.$item['student_id']);?>" class='btn btn-success btn-sm' onclick="return confirm('Do you wish to add this student?');return false;">Add</a></td>
+                    //         <?php
+                    //     echo "</tr>";
+                    // }
+                  ?>
+                </tbody>
+              </table> -->
             </div>
             <div class="modal-footer justify-content-between">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
