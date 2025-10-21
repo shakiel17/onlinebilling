@@ -93,6 +93,7 @@
                                 </td>
                                 <?php
                             echo "</tr>";
+                            $x++;
                         }
                         ?>
                     </tbody>
@@ -157,6 +158,7 @@
                                 </td>
                                 <?php
                             echo "</tr>";
+                            $x++;
                         }
                         ?>
                     </tbody>
