@@ -281,12 +281,12 @@
         }
         public function getAllStudentByCourse($course){
             $id=$this->session->id;            
-                $result=$this->db->query("SELECT s.*,c.description,c.amount_lab,c.amount_lec FROM student s LEFT JOIN course c ON c.id=s.student_course WHERE s.school_id='$id' AND s.student_course='$course' ORDER BY s.student_lastname ASC");            
+                $result=$this->db->query("SELECT s.*,c.description,c.amount_lab,c.amount_lec FROM student s LEFT JOIN course c ON c.id=s.student_course WHERE s.school_id='$id' AND s.student_course='$course' AND s.student_type='college' ORDER BY s.student_lastname ASC");            
             return $result->result_array();
         }
         public function getAllStudentByGrade($grade){
             $id=$this->session->id;        
-                $result=$this->db->query("SELECT s.*,c.description,c.amount FROM student s LEFT JOIN grade c ON c.id=s.student_course WHERE s.school_id='$id' AND s.student_course='$grade' ORDER BY s.student_lastname ASC");        
+                $result=$this->db->query("SELECT s.*,c.description,c.amount FROM student s LEFT JOIN grade c ON c.id=s.student_course WHERE s.school_id='$id' AND s.student_course='$grade' AND s.student_type='highschool' ORDER BY s.student_lastname ASC");        
             return $result->result_array();
         }
         public function getStudentAccountByType($type){
