@@ -382,6 +382,7 @@
             $type=$this->input->post('type');
             $units_lec=$this->input->post('units_lec');
             $units_lab=$this->input->post('units_lab');
+            $unitcost=$this->input->post('unitcost');
             $semester=$this->input->post('semester');
             $syear=$this->input->post('syear');
             $rem=($unitcost_lec*$units_lec) + ($unitcost_lab*$units_lab);
