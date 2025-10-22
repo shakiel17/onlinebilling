@@ -474,7 +474,7 @@
                     if($check->num_rows() > 0){
 
                     }else{
-                        $this->db->query("INSERT INTO student_account_college(school_id,student_id,`description`,amount,syear,datearray,timearray) VALUES('$id','$item[student_id]','$res[course]','','$syear','$date','$time')");
+                        $this->db->query("INSERT INTO student_account_hs(school_id,student_id,`description`,amount,syear,datearray,timearray) VALUES('$id','$item[student_id]','$res[course]','','$syear','$date','$time')");
                     }
                 }
                 return true;
