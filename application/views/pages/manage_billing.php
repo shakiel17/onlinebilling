@@ -56,7 +56,7 @@
               </div>
               <div class="card-body">
                 <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="<?=base_url('manage_student');?>">All</a></li>
+                <li class="breadcrumb-item"><a href="<?=base_url('manage_billing');?>">All</a></li>
                 <?php
                 $courses=$this->Billing_model->getAllCourse();
                 foreach($courses as $cor){
@@ -122,7 +122,7 @@
               </div>
               <div class="card-body">
                 <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="<?=base_url('manage_student');?>">All</a></li>
+                <li class="breadcrumb-item"><a href="<?=base_url('manage_billing');?>">All</a></li>
                 <?php
                 $courses=$this->Billing_model->getAllGrade();
                 foreach($courses as $cor){
