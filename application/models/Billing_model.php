@@ -452,7 +452,7 @@
                     if($check->num_rows() > 0){
 
                     }else{
-                        $this->db->query("INSERT INTO student_account_college(school_id,student_id,course,unitcost,units,semester,syear,datearray,timearray) VALUES('$id','$item[student_id]','$res[course]','','','$semester','$syear','$date','$time')");
+                        $this->db->query("INSERT INTO student_account_college(school_id,student_id,course,unitcost_lec,units_lec,unitcost_lab,units_lab,semester,syear,datearray,timearray) VALUES('$id','$item[student_id]','$res[course]','','','','','$semester','$syear','$date','$time')");
                     }
                 }
                 return true;
