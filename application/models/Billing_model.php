@@ -400,7 +400,7 @@
                 if($check->num_rows() > 0){
                     $result=$this->db->query("UPDATE student_account_hs SET rem_balance='$unitcost', grade_level='$course' WHERE school_id='$school_id' AND student_id='$student_id' AND `description`='$course' AND syear='$syear'");
                 }else{
-                    $result=$this->db->query("INSERT INTO student_account_hs(school_id,student_id,`description`,amount,syear,datearray,timearray,grade_level) VALUES('$school_id','$student_id','$course','$unitcost','$syear','$date','$time','$course')");
+                    $result=$this->db->query("INSERT INTO student_account_hs(school_id,student_id,`description`,amount,syear,datearray,timearray,grade_level,rem_balance) VALUES('$school_id','$student_id','$course','$unitcost','$syear','$date','$time','$course','$unitcost')");
                 }
             }
 
