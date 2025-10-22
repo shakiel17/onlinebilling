@@ -301,12 +301,12 @@
         public function getStudentAccountByCourse($course){
             $id=$this->session->id;            
            
-            $result=$this->db->query("SELECT s.*,c.description,c.amount_lab,c.amount_lec,sac.unitcost_lab,sac.units_lab,sac.unitcost_lec,sac.units_lec,sac.semester,sac.syear FROM student s LEFT JOIN course c ON c.id=s.student_course LEFT JOIN student_account_college sac ON sac.student_id=s.student_id AND sac.school_id=s.school_id WHERE s.school_id='$id' AND s.student_course='$course' AND c.school_id='$id' ORDER BY s.student_lastname ASC,s.student_firstname ASC");           
+            $result=$this->db->query("SELECT s.*,c.description,c.amount_lab,c.amount_lec,sac.unitcost_lab,sac.units_lab,sac.unitcost_lec,sac.units_lec,sac.semester,sac.syear FROM student s LEFT JOIN course c ON c.id=s.student_course LEFT JOIN student_account_college sac ON sac.student_id=s.student_id AND sac.school_id=s.school_id WHERE s.school_id='$id' AND s.student_course='$course' AND c.school_id='$id' AND s.student_type='college' ORDER BY s.student_lastname ASC,s.student_firstname ASC");           
             return $result->result_array();
         }
         public function getStudentAccountByGrade($grade){
             $id=$this->session->id;           
-            $result=$this->db->query("SELECT s.*,c.description,c.amount,sah.description as grade,sah.amount as unitcost,sah.grade_level,sah.syear FROM student s LEFT JOIN grade c ON c.id=s.student_course LEFT JOIN student_account_hs sah ON sah.student_id=s.student_id WHERE s.school_id='$id' AND s.student_course='$grade' ORDER BY s.student_lastname ASC,s.student_firstname ASC");           
+            $result=$this->db->query("SELECT s.*,c.description,c.amount,sah.description as grade,sah.amount as unitcost,sah.grade_level,sah.syear FROM student s LEFT JOIN grade c ON c.id=s.student_course LEFT JOIN student_account_hs sah ON sah.student_id=s.student_id WHERE s.school_id='$id' AND s.student_course='$grade' AND s.student_type='highschool' ORDER BY s.student_lastname ASC,s.student_firstname ASC");           
             return $result->result_array();
         }
         public function save_student(){
